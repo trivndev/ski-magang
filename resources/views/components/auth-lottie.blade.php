@@ -1,9 +1,18 @@
-@php
-    $class = "flex flex-1 h-full min-h-96 w-full rounded-md bg-gradient-to-br from-blue-600 to-blue-500 p-6 hidden lg:block"
-@endphp
-
-<div {{$attributes->merge(['class'=>$class])}} >
-    <div>
-
+<div class="w-full hidden lg:block">
+    <div
+        class="flex-1 h-full aspect-square w-full rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 dark:from-gray-800 dark:to-gray-900 p-6 hidden lg:flex">
+        <div class="text-white flex flex-col justify-center items-center w-full">
+            <div>
+                <canvas id="greetings" class="size-72 aspect-square"></canvas>
+                <script type="module">
+                    const dotLottie = new DotLottie({
+                        autoplay: true,
+                        loop: true,
+                        canvas: document.querySelector('#greetings'),
+                        src: "{{ asset('lotties/Welcome.lottie') }}"
+                    });
+                </script>
+            </div>
+        </div>
     </div>
 </div>
