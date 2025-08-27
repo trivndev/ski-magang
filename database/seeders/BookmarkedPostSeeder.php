@@ -2,22 +2,23 @@
 
 namespace Database\Seeders;
 
+use App\Models\BookmarkedPost;
 use App\Models\Internship;
-use App\Models\JobCategory;
+use App\Models\LikedPost;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class InternshipSeeder extends Seeder
+class BookmarkedPostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Internship::factory(50)->recycle([
+        BookmarkedPost::factory(50)->recycle([
             User::all(),
-            JobCategory::all(),
+            Internship::all()
         ])->create();
     }
 }

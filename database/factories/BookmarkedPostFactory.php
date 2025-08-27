@@ -7,9 +7,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\LikedPost>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BookmarkedPost>
  */
-class LikedPostFactory extends Factory
+class BookmarkedPostFactory extends Factory
 {
     /**
      * Define the model's default state.

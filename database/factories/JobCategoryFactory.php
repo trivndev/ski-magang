@@ -16,8 +16,7 @@ class JobCategoryFactory extends Factory
      */
     public function definition(): array
     {
-        $title = $this->faker->jobTitle();
-        return [``
+        return [
 
         ];
     }
