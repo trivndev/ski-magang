@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('internships', function (Blueprint $table) {
-            $table->unsignedTinyInteger('job_category')
-                ->after('end_date');
-            $table->foreign('job_category')
+            $table->unsignedTinyInteger('job_category_id')->after('end_date');
+            $table->foreign('job_category_id')
                 ->references('id')
                 ->on('job_categories')
                 ->onDelete('cascade');
+
+            // FK ke users (users.id = BIGINT)
             $table->foreignId('author_id')
-                ->after('job_category')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+                ->after('job_category_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
         });
     }
 
@@ -31,11 +31,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('internship', function (Blueprint $table) {
+        Schema::table('internships', function (Blueprint $table) {
             $table->dropForeign(['job_category_id']);
             $table->dropForeign(['author_id']);
-            $table->dropColumn('job_category_id');
-            $table->dropColumn('author_id');
+            $table->dropColumn(['job_category_id', 'author_id']);
         });
     }
 };

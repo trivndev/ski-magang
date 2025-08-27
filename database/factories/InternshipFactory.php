@@ -22,7 +22,7 @@ class InternshipFactory extends Factory
             'job_title' => fake()->jobTitle(),
             'company' => fake()->company(),
             'location' => fake()->address(),
-            'description' => fake()->paragraph(2),
+            'job_description' => fake()->paragraph(2),
             'requirements' => fake()->paragraph(2),
             'benefits' => fake()->paragraph(2),
             'contact_email' => fake()->email(),
@@ -30,6 +30,7 @@ class InternshipFactory extends Factory
             'contact_name' => fake()->name(),
             'author_id' => User::factory(),
             'job_category_id' => JobCategory::factory(),
+            'end_date' => fake()->dateTimeBetween('+1 week', '+1 month'),
         ];
     }
 }
