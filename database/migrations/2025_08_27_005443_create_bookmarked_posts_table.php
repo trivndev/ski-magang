@@ -21,7 +21,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->unique(['internship_id', 'user_id']);
             $table->index('user_id');
-            $table->timestamps();
         });
     }
 
