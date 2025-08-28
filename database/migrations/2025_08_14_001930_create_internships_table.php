@@ -15,9 +15,9 @@ return new class extends Migration {
             $table->string('job_title', 255);
             $table->string('company', 255);
             $table->string('location', 255);
-            $table->string('job_description');
-            $table->string('requirements');
-            $table->string('benefits')->nullable();
+            $table->text('job_description');
+            $table->text('requirements');
+            $table->text('benefits')->nullable();
             $table->string('contact_email', 255);
             $table->string('contact_phone', 20);
             $table->string('contact_name', 255);
