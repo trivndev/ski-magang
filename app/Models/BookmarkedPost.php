@@ -10,6 +10,8 @@ class BookmarkedPost extends Model
     /** @use HasFactory<\Database\Factories\BookmarkedPostFactory> */
     use HasFactory;
 
+    public $timestamps = false;
+
     public function internship()
     {
         return $this->belongsTo(Internship::class);
