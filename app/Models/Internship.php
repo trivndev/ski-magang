@@ -25,6 +25,9 @@ class Internship extends Model
         'contact_phone',
         'contact_name',
         'end_date',
+        'author_id',
+        'job_category_id',
+        'vocational_major_id',
     ];
 
     public function likes(): HasMany
