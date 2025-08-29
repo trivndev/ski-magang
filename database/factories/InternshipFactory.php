@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\JobCategory;
 use App\Models\User;
+use App\Models\VocationalMajor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,6 +29,7 @@ class InternshipFactory extends Factory
             'contact_email' => fake()->email(),
             'contact_phone' => fake()->phoneNumber(),
             'contact_name' => fake()->name(),
+            'vocational_major_id' => VocationalMajor::factory(),
             'author_id' => User::factory(),
             'job_category_id' => JobCategory::factory(),
             'end_date' => fake()->dateTimeBetween('+1 week', '+1 month'),
