@@ -16,7 +16,7 @@ class InternshipSeeder extends Seeder
      */
     public function run(): void
     {
-        Internship::factory(50)->recycle([
+        Internship::factory(10000)->recycle([
             User::all(),
             VocationalMajor::all(),
             JobCategory::all(),

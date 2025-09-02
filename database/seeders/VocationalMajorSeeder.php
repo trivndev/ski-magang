@@ -20,7 +20,7 @@ class VocationalMajorSeeder extends Seeder
             'major_name' => "BID",
         ]);
         VocationalMajor::create([
-            'major_name' => "AKL",
+            'major_name' => "AK,
         ]);
     }
 }
