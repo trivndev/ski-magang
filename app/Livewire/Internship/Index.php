@@ -11,10 +11,21 @@ use Livewire\Component;
 class Index extends Component
 {
     #[computed()]
+    public function selectedInternship()
+    {
+        $jobId = request()->query('jobId');
+        if ($jobId) {
+            return Internship::find($jobId);
+        }
+        return null;
+    }
+
+    #[computed()]
     public function internships()
     {
         return Internship::latest()->paginate(10);
     }
+
     public function render()
     {
         return view('livewire.internship.index');

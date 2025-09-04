@@ -12,7 +12,8 @@
     <title>{{ $title ?? 'Page Title' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance
-    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+    @stack('lottie-head')
+    @stack('aos-head')
 </head>
 
 <body>
@@ -84,17 +85,8 @@
 </flux:main>
 
 @fluxScripts
-<script type="module">
-    import {DotLottie} from "https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm";
-
-    new DotLottie({
-        autoplay: true,
-        loop: true,
-        canvas: document.getElementById("canvas"),
-        src: "https://lottie.host/4db68bbd-31f6-4cd8-84eb-189de081159a/IGmMCqhzpt.lottie", // or .json file
-    });
-</script>
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+@stack('lottie-script')
+@stack('aos-script')
 <script src="https://unpkg.com/typeit@8.8.7/dist/index.umd.js"></script>
 </body>
 </html>
