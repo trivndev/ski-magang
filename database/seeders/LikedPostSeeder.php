@@ -15,7 +15,7 @@ class LikedPostSeeder extends Seeder
      */
     public function run(): void
     {
-        LikedPost::factory(50)->recycle([
+        LikedPost::factory(1000)->recycle([
             User::all(),
             Internship::all()
         ])->create();

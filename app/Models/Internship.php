@@ -30,16 +30,22 @@ class Internship extends Model
         'vocational_major_id',
     ];
 
+    protected $with = ['jobCategory', 'author', 'likes'];
+
+    protected $withCount = ['likes'];
+
     public function likes(): HasMany
     {
         return $this->hasMany(LikedPost::class);
     }
+
     public function jobCategory(): BelongsTo
     {
         return $this->belongsTo(JobCategory::class);
     }
+
     public function author(): BelongsTo
     {
-        return $this->belongsTo(User::class,'author_id');
+        return $this->belongsTo(User::class, 'author_id');
     }
 }

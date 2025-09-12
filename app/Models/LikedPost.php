@@ -12,6 +12,8 @@ class LikedPost extends Model
 
     public $timestamps = false;
 
+    protected $fillable = ['internship_id', 'user_id'];
+
     public function internship()
     {
         return $this->belongsTo(Internship::class);
