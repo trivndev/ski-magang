@@ -19,7 +19,7 @@
 <body>
 <flux:header container class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2"/>
-    <flux:brand href="/" name="{{ env('APP_NAME') }}" class="max-lg:hidden"/>
+    <flux:brand href="/" name="{{ config('app.name') }}" class="max-lg:hidden"/>
     <flux:spacer/>
     <flux:navbar class="-mb-px max-lg:hidden">
         <flux:navbar.item icon="home" href="/">Home</flux:navbar.item>
@@ -67,8 +67,8 @@
 <flux:sidebar stashable sticky
               class="border-r border-zinc-200 bg-zinc-50 lg:hidden rtl:border-l rtl:border-r-0 dark:border-zinc-700 dark:bg-zinc-900">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
-    <flux:brand href="/" name="{{ env('APP_NAME') }}" class="px-2 dark:hidden"/>
-    <flux:brand href="/" name="{{ env('APP_NAME') }}" class="hidden px-2 dark:flex"/>
+    <flux:brand href="/" name="{{ config('app.name') }}" class="px-2 dark:hidden"/>
+    <flux:brand href="/" name="{{ config('app.name') }}" class="hidden px-2 dark:flex"/>
     <flux:navlist variant="outline" class="space-y-2!">
         <flux:navlist.item icon="home" href="/">Home</flux:navlist.item>
         <flux:navlist.item icon="user-group" href="/internship">Internship</flux:navlist.item>

@@ -58,4 +58,14 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function likedInternships()
+    {
+        return $this->belongsToMany(Internship::class, 'liked_posts', 'user_id', 'internship_id');
+    }
+
+    public function bookmarkedInternships()
+    {
+        return $this->belongsToMany(Internship::class, 'bookmarked_posts', 'user_id', 'internship_id');
+    }
 }

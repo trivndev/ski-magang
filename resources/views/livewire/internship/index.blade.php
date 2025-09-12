@@ -8,14 +8,9 @@
     </script>
 @endpush
 <div class="flex space-x-12 mx-auto max-w-7xl">
-    <div class="space-y-6 min-w-2/5">
+    <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
         @foreach($this->internships as $internship)
             <x-internship.card :$internship/>
         @endforeach
-    </div>
-    <div class="flex w-full sticky top-0 h-fit">
-        @if($this->selectedInternship())
-            <x-internship.job-detail :jobDetail="$this->selectedInternship()"/>
-        @endif
     </div>
 </div>

@@ -10,20 +10,10 @@ use Livewire\Component;
 #[layout('components.layouts.main-app')]
 class Index extends Component
 {
-    #[computed()]
-    public function selectedInternship()
-    {
-        $jobId = request()->query('jobId');
-        if ($jobId) {
-            return Internship::find($jobId);
-        }
-        return null;
-    }
-
-    #[computed()]
+    #[Computed()]
     public function internships()
     {
-        return Internship::latest()->paginate(10);
+        return Internship::withCount('likes')->latest()->paginate(12);
     }
 
     public function render()
