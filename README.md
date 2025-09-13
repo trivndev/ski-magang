@@ -26,7 +26,7 @@ SKI MAGANG is a website for students of SMK Kristen Immanuel Pontianak to share 
 ## Installation
 
 ### Prerequisites
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 - Node.js & npm
 - Database (MySQL/PostgreSQL)
