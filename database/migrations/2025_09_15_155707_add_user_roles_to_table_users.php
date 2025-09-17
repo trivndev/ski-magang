@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->unsignedTinyInteger('role_id')->after('password')->nullable()->default(null);
+            $table->unsignedTinyInteger('role_id')->after('password')->nullable();
             $table->foreign('role_id')
                 ->references('id')
                 ->on('users_roles')
