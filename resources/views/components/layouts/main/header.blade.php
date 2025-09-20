@@ -18,7 +18,7 @@
     $isLoggedIn = Auth::check();
 @endphp
 <flux:header container
-             class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 place-content-center">
+             class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 place-content-center top-0 z-50 sticky">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2"/>
     <flux:brand href="/" name="{{ config('app.name') }}" class="max-lg:hidden"/>
     <flux:spacer/>
