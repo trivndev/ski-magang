@@ -15,9 +15,19 @@ class LikedPostSeeder extends Seeder
      */
     public function run(): void
     {
-        LikedPost::factory(1000)->recycle([
-            User::all(),
-            Internship::all()
-        ])->create();
+        $users = User::all();
+        $internships = Internship::all();
+
+        foreach ($users as $user) {
+            $likeCount = rand(1, 10);
+            $selectedInternship = $internships->random($likeCount);
+
+            foreach ($selectedInternship as $internship) {
+                LikedPost::create([
+                    'user_id' => $user->id,
+                    'internship_id' => $internship->id,
+                ]);
+            }
+        }
     }
 }
