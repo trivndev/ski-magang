@@ -11,8 +11,8 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])
-    ->prefix('internship')
-    ->name('internship.')
+    ->prefix('internships')
+    ->name('internships.')
     ->group(function () {
         Route::get('/', Index::class)->name('index');
     });
