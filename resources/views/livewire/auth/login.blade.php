@@ -7,24 +7,20 @@
             <div>
                 <x-auth-session-status class="text-center" :status="session('status')"/>
                 <form wire:submit="login" class="flex flex-col gap-6">
-                    <!-- Email Address -->
                     <flux:input
                         wire:model="email"
                         :label="__('Email address')"
                         type="email"
-                        required
                         autofocus
                         autocomplete="email"
                         placeholder="email@example.com"
                     />
 
-                    <!-- Password -->
                     <div class="relative">
                         <flux:input
                             wire:model="password"
                             :label="__('Password')"
                             type="password"
-                            required
                             autocomplete="current-password"
                             :placeholder="__('Password')"
                             viewable
@@ -38,7 +34,6 @@
                         @endif
                     </div>
 
-                    <!-- Remember Me -->
                     <flux:checkbox wire:model="remember" :label="__('Remember me')"/>
 
                     <div class="flex items-center justify-end">
