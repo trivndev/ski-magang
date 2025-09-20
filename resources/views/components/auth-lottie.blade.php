@@ -1,4 +1,4 @@
-<div class="w-full hidden lg:block">
+<div class="w-full hidden lg:block" wire:ignore>
     <div
         class="flex-1 h-full aspect-square w-full rounded-xl bg-gradient-to-br from-gray-500 to-gray-600 dark:from-gray-800 dark:to-gray-900 p-6 hidden lg:flex">
         <div class="text-white flex flex-col justify-center items-center w-full">
