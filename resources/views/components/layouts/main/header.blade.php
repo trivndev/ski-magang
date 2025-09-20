@@ -1,7 +1,4 @@
-@php
-    $isLoggedIn = Auth::check();
-@endphp
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -17,6 +14,9 @@
 </head>
 
 <body>
+@php
+    $isLoggedIn = Auth::check();
+@endphp
 <flux:header container
              class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 place-content-center">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2"/>
