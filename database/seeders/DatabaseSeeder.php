@@ -22,11 +22,16 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             JobCategorySeeder::class,
             VocationalMajorSeeder::class,
+            InternshipsPostStatusSeeder::class,
             InternshipSeeder::class,
             LikedPostSeeder::class,
             BookmarkedPostSeeder::class,
         ]);
-        $threeLatestInternships = Internship::latest()->take(3)->get();;
+        $threeLatestInternships = Internship::query()
+            ->with(['jobCategory', 'author', 'status'])
+            ->withCount('likes')
+            ->whereRelation('status', 'status', 'Approved')
+            ->latest()->take(3)->get();
         foreach ($threeLatestInternships as $internship) {
             LikedPost::create([
                 'user_id' => 1,

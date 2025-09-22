@@ -13,7 +13,15 @@ class Index extends Component
     #[Computed()]
     public function internships()
     {
-        return Internship::withCount('likes')->latest()->paginate(12);
+        return Internship::query()
+            ->with(['jobCategory', 'author', 'status'])
+            ->withCount('likes')
+            ->withExists([
+                'likes as liked_by_me' => fn ($q) => $q->where('user_id', auth()->id()),
+            ])
+            ->whereRelation('status', 'status', 'Approved')
+            ->latest()
+            ->paginate(12);
     }
 
     public function render()

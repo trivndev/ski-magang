@@ -85,7 +85,6 @@
     </flux:navlist>
 </flux:sidebar>
 
-
 <main>
     {{ $slot }}
 </main>
@@ -121,7 +120,6 @@
 @fluxScripts
 @stack('lottie-script')
 @stack('aos-script')
-<script src="https://unpkg.com/typeit@8.8.7/dist/index.umd.js"></script>
 </body>
 
 </html>
