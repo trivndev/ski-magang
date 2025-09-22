@@ -38,6 +38,11 @@ class Internship extends Model
         return $this->hasMany(LikedPost::class);
     }
 
+    public function bookmarks(): HasMany
+    {
+        return $this->hasMany(BookmarkedPost::class);
+    }
+
     public function jobCategory(): BelongsTo
     {
         return $this->belongsTo(JobCategory::class);

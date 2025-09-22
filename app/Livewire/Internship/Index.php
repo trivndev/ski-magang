@@ -18,6 +18,7 @@ class Index extends Component
             ->withCount('likes')
             ->withExists([
                 'likes as liked_by_me' => fn ($q) => $q->where('user_id', auth()->id()),
+                'bookmarks as bookmarked_by_me' => fn ($q) => $q->where('user_id', auth()->id()),
             ])
             ->whereRelation('status', 'status', 'Approved')
             ->latest()
