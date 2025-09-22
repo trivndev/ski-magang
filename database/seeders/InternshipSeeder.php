@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Internship;
+use App\Models\InternshipPostStatus;
 use App\Models\JobCategory;
 use App\Models\User;
 use App\Models\VocationalMajor;

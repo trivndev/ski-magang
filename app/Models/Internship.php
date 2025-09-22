@@ -28,11 +28,10 @@ class Internship extends Model
         'author_id',
         'job_category_id',
         'vocational_major_id',
+        'status_id',
     ];
 
-    protected $with = ['jobCategory', 'author', 'likes'];
-
-    protected $withCount = ['likes'];
+    protected $with = ['jobCategory', 'author', 'status'];
 
     public function likes(): HasMany
     {
@@ -47,5 +46,10 @@ class Internship extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(InternshipsPostStatus::class, 'status_id');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\InternshipPostStatus;
+use App\Models\InternshipsPostStatus;
 use App\Models\JobCategory;
 use App\Models\User;
 use App\Models\VocationalMajor;
@@ -32,6 +34,7 @@ class InternshipFactory extends Factory
             'vocational_major_id' => VocationalMajor::factory(),
             'author_id' => User::factory(),
             'job_category_id' => JobCategory::factory(),
+            'status_id' => InternshipsPostStatus::inRandomOrder()->value('id') ?? 1,
             'end_date' => fake()->dateTimeBetween('+1 week', '+1 month'),
         ];
     }
