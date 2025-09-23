@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\BookmarkedPost;
 use App\Models\Internship;
 use App\Models\LikedPost;
-use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersRoleSeeder::class,
             UserSeeder::class,
-            JobCategorySeeder::class,
             VocationalMajorSeeder::class,
             InternshipsPostStatusSeeder::class,
             InternshipSeeder::class,

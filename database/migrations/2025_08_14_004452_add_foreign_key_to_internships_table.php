@@ -12,15 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('internships', function (Blueprint $table) {
-            $table->unsignedTinyInteger('job_category_id')->after('end_date');
-            $table->foreign('job_category_id')
-                ->references('id')
-                ->on('job_categories')
-                ->onDelete('cascade');
-
-            // FK ke users (users.id = BIGINT)
             $table->foreignId('author_id')
-                ->after('job_category_id')
+                ->after('end_date')
                 ->constrained('users')
                 ->cascadeOnDelete();
         });
