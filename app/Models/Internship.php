@@ -31,7 +31,11 @@ class Internship extends Model
         'status_id',
     ];
 
-    protected $with = ['jobCategory', 'author', 'status'];
+    protected $with = ['jobCategory', 'author','vocationalMajor', 'status'];
+
+    protected $casts = [
+      "end_date" => "datetime",
+    ];
 
     public function likes(): HasMany
     {
@@ -46,6 +50,11 @@ class Internship extends Model
     public function jobCategory(): BelongsTo
     {
         return $this->belongsTo(JobCategory::class);
+    }
+
+    public function VocationalMajor(): BelongsTo
+    {
+        return $this->belongsTo(VocationalMajor::class);
     }
 
     public function author(): BelongsTo
