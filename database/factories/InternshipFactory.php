@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\InternshipPostStatus;
 use App\Models\InternshipsPostStatus;
 use App\Models\JobCategory;
 use App\Models\User;
@@ -25,9 +24,9 @@ class InternshipFactory extends Factory
             'job_title' => fake()->jobTitle(),
             'company' => fake()->company(),
             'location' => fake()->address(),
-            'job_description' => fake()->paragraph(2),
-            'requirements' => fake()->paragraph(2),
-            'benefits' => fake()->paragraph(2),
+            'job_description' => fake()->paragraph(7),
+            'requirements' => fake()->paragraph(7),
+            'benefits' => fake()->paragraph(4   ),
             'contact_email' => fake()->email(),
             'contact_phone' => fake()->phoneNumber(),
             'contact_name' => fake()->name(),
