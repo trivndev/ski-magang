@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('internships', function (Blueprint $table) {
-            $table->unsignedTinyInteger('vocational_major_id')->after('job_category_id');
+            $table->unsignedTinyInteger('vocational_major_id')->after('author_id');
             $table->foreign('vocational_major_id')
                 ->references('id')
                 ->on('vocational_majors')

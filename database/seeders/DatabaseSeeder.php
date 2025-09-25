@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             BookmarkedPostSeeder::class,
         ]);
         $threeLatestInternships = Internship::query()
-            ->with(['jobCategory', 'author', 'status'])
+            ->with(['author', 'status'])
             ->withCount('likes')
             ->whereRelation('status', 'status', 'Approved')
             ->latest()->take(3)->get();

@@ -51,23 +51,24 @@
                 </div>
             </div>
             <div class="flex gap-x-4 gap-y-2 flex-wrap">
-                @if($internship->liked_by_me)
-                    <flux:button icon="heart" variant="primary" color="red" icon:variant="solid" class="hidden md:flex">
-                        Remove like
-                    </flux:button>
-                @else
-                    <flux:button icon="heart" variant="primary" color="red" icon:variant="outline">
-                        Like this post
-                    </flux:button>
-                @endif
                 @if($internship->bookmarked_by_me)
-                    <flux:button variant="primary" icon="bookmark" icon:variant="solid">Unsave this
-                        post
-                    </flux:button>
+                    <flux:tooltip content="Unsave this post">
+                        <flux:button variant="primary" icon="bookmark" icon:variant="solid"/>
+                    </flux:tooltip>
                 @else
-                    <flux:button variant="primary" icon="bookmark" icon:variant="outline">Save this
-                        post
-                    </flux:button>
+                    <flux:tooltip content="Save this post">
+                        <flux:button variant="primary" icon="bookmark" icon:variant="outline"/>
+                    </flux:tooltip>
+                @endif
+                @if($internship->liked_by_me)
+                    <flux:tooltip content="Remove like">
+                        <flux:button icon="heart" variant="primary" color="red" icon:variant="solid"
+                                     class="hidden md:flex"/>
+                    </flux:tooltip>
+                @else
+                    <flux:tooltip content="Like this post">
+                        <flux:button icon="heart" variant="primary" color="red" icon:variant="outline"/>
+                    </flux:tooltip>
                 @endif
             </div>
             <div class="space-y-2 [&_div]:space-y-1">

@@ -13,7 +13,7 @@
     @stack('aos-head')
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
 @php
     $isLoggedIn = Auth::check();
 @endphp
@@ -36,8 +36,13 @@
                     <flux:text>{{ Auth::user()->email }}</flux:text>
                 </flux:navlist.group>
                 <flux:menu.separator/>
-                <flux:navlist.item href="/settings" icon="cog-6-tooth">Settings</flux:navlist.item>
+                <flux:navlist.item href="{{ route('internships.create') }}" icon="user-group">Your posts
+                </flux:navlist.item>
+                <flux:navlist.item href="/internships/liked" icon="heart">Liked Posts</flux:navlist.item>
+                <flux:navlist.item href="/internships/bookmarked" icon="bookmark">Bookmarked Posts
+                </flux:navlist.item>
                 <flux:menu.separator/>
+                <flux:navlist.item href="/settings" icon="cog-6-tooth">Settings</flux:navlist.item>
                 <form method="POST" wire:submit.prevent action="{{ route('logout') }}">
                     @csrf
                     <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
@@ -85,7 +90,7 @@
     </flux:navlist>
 </flux:sidebar>
 
-<main>
+<main class="flex-1">
     {{ $slot }}
 </main>
 
@@ -104,7 +109,7 @@
                 </svg>
                 <span>GitHub</span>
             </a>
-            <a href="mailto:info@smk-immanuel.sch.id"
+            <a href=""
                class="flex items-center text-gray-500 transition hover:text-blue-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                      class="mr-1 h-5 w-5">
