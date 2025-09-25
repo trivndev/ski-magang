@@ -20,7 +20,6 @@ class InternshipSeeder extends Seeder
         Internship::factory(1000)->recycle([
             User::all(),
             VocationalMajor::all(),
-            JobCategory::all(),
         ])->create();
     }
 }

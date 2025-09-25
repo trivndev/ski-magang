@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Livewire\Internship;
+namespace App\Livewire\Internships;
 
 use App\Models\Internship;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 #[layout('components.layouts.main-app')]
-class Index extends Component
+class Create extends Component
 {
     #[Computed()]
     public function internships()
     {
         return Internship::query()
-            ->with(['jobCategory', 'author', 'status'])
+            ->with(['author', 'status'])
             ->withCount('likes')
             ->withExists([
-                'likes as liked_by_me' => fn ($q) => $q->where('user_id', auth()->id()),
-                'bookmarks as bookmarked_by_me' => fn ($q) => $q->where('user_id', auth()->id()),
+                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
+                'bookmarks as bookmarked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
             ])
+            ->where('author_id', auth()->id())
             ->whereRelation('status', 'status', 'Approved')
             ->latest()
             ->paginate(12);
@@ -27,6 +29,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.internship.index');
+        return view('livewire.internships.create')->layoutData(['title' => "Internships create"]);
     }
 }

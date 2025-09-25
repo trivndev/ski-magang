@@ -26,12 +26,11 @@ class Internship extends Model
         'contact_name',
         'end_date',
         'author_id',
-        'job_category_id',
         'vocational_major_id',
         'status_id',
     ];
 
-    protected $with = ['jobCategory', 'author','vocationalMajor', 'status'];
+    protected $with = [ 'author','vocationalMajor', 'status'];
 
     protected $casts = [
       "end_date" => "datetime",
@@ -45,11 +44,6 @@ class Internship extends Model
     public function bookmarks(): HasMany
     {
         return $this->hasMany(BookmarkedPost::class);
-    }
-
-    public function jobCategory(): BelongsTo
-    {
-        return $this->belongsTo(JobCategory::class);
     }
 
     public function VocationalMajor(): BelongsTo

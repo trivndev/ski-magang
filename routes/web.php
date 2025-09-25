@@ -1,10 +1,13 @@
 <?php
 
+use App\Livewire\Internships\BookmarkedPost;
+use App\Livewire\Internships\Create;
+use App\Livewire\Internships\LikedPost;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Internship\Index;
+use App\Livewire\Internships\Index;
 
 Route::get('/', function () {
     return view('home');
@@ -15,6 +18,9 @@ Route::middleware(['auth', 'verified'])
     ->name('internships.')
     ->group(function () {
         Route::get('/', Index::class)->name('index');
+        Route::get('/create', Create::class)->name('create');
+        Route::get('/liked', LikedPost::class)->name('liked');
+        Route::get('/bookmarked', BookmarkedPost::class)->name('bookmarked');
     });
 
 Route::middleware(['auth'])->group(function () {
