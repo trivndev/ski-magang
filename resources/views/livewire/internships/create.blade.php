@@ -54,9 +54,6 @@
             <flux:button icon="adjustments-horizontal" variant="primary"/>
         </flux:modal.trigger>
     </div>
-    <div>
-
-    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-8">
         @foreach($this->internships as $internship)
             <x-internship.card :$internship/>
