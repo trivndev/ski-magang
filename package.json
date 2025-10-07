@@ -8,6 +8,7 @@
     "dependencies": {
         "@lottiefiles/dotlottie-web": "^0.50.1",
         "@tailwindcss/vite": "^4.1.11",
+        "aos": "^2.3.4",
         "autoprefixer": "^10.4.20",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",

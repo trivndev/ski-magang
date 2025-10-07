@@ -7,5 +7,4 @@ use Illuminate\Database\Eloquent\Model;
 class UsersRole extends Model
 {
     public $timestamps = false;
-
 }

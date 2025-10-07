@@ -30,12 +30,6 @@ class Internship extends Model
         'status_id',
     ];
 
-    protected $with = [ 'author','vocationalMajor', 'status'];
-
-    protected $casts = [
-      "end_date" => "datetime",
-    ];
-
     public function likes(): HasMany
     {
         return $this->hasMany(LikedPost::class);

@@ -1,5 +1,5 @@
 <div class="flex flex-col space-y-4 mx-auto max-w-7xl py-8 px-4 md:py-16">
-    <div class="flex justify-between">
+    <div class="flex justify-between w-full">
         <form class="hidden md:block">
             <div class="flex gap-3 items-center">
                 <flux:input placeholder="Search post" icon="magnifying-glass" class="max-w-xs"/>
@@ -39,7 +39,7 @@
                         </flux:checkbox.group>
                     </div>
                     <div class="justify-self-end space-x-1">
-                        <flux:button variant="primary" color="red">Reset</flux:button>
+                        <flux:button variant="primary" color="red" wire:click="$reset()">Reset</flux:button>
                         <flux:button variant="primary">Apply</flux:button>
                     </div>
                 </form>

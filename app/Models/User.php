@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -55,16 +57,21 @@ class User extends Authenticatable
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 
-    public function likedInternships()
+    public function internships(): HasMany
+    {
+        return $this->hasMany(Internship::class);
+    }
+
+    public function likedInternships(): BelongsToMany
     {
         return $this->belongsToMany(Internship::class, 'liked_posts', 'user_id', 'internship_id');
     }
 
-    public function bookmarkedInternships()
+    public function bookmarkedInternships(): BelongsToMany
     {
         return $this->belongsToMany(Internship::class, 'bookmarked_posts', 'user_id', 'internship_id');
     }
