@@ -39,7 +39,7 @@
                 <flux:navlist.item href="{{ route('internships.create') }}" icon="user-group">Your posts
                 </flux:navlist.item>
                 <flux:navlist.item href="/internships/liked" icon="heart">Liked Posts</flux:navlist.item>
-                <flux:navlist.item href="/internships/bookmarked" icon="bookmark">Bookmarked Posts
+                <flux:navlist.item href="/internships/bookmarked" icon="cog-6-tooth">Bookmarked Posts
                 </flux:navlist.item>
                 <flux:menu.separator/>
                 <flux:navlist.item href="/settings" icon="cog-6-tooth">Settings</flux:navlist.item>
@@ -109,7 +109,7 @@
                 </svg>
                 <span>GitHub</span>
             </a>
-            <a href=""
+            <a href="mailto:info@smk-immanuel.sch.id"
                class="flex items-center text-gray-500 transition hover:text-blue-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                      class="mr-1 h-5 w-5">

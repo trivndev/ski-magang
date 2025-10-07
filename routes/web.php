@@ -13,14 +13,15 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::middleware(['auth', 'verified'])
-    ->prefix('internships')
+Route::prefix('internships')
     ->name('internships.')
     ->group(function () {
         Route::get('/', Index::class)->name('index');
-        Route::get('/create', Create::class)->name('create');
-        Route::get('/liked', LikedPost::class)->name('liked');
-        Route::get('/bookmarked', BookmarkedPost::class)->name('bookmarked');
+        Route::middleware(['auth', 'verified'])->group(function () {
+            Route::get('/create', Create::class)->name('create');
+            Route::get('/liked', LikedPost::class)->name('liked');
+            Route::get('/bookmarked', BookmarkedPost::class)->name('bookmarked');
+        });
     });
 
 Route::middleware(['auth'])->group(function () {
