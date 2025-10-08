@@ -55,7 +55,7 @@
                             @php
                                 $vocationalMajors = VocationalMajor::all();
                             @endphp
-                            @foreach($vocationalMajors as $vocationalMajor)
+                                @foreach($vocationalMajors as $vocationalMajor)
                                 <flux:checkbox label="{{ $vocationalMajor->major_name }}"
                                                value="{{ $vocationalMajor->id }}"/>
                             @endforeach
