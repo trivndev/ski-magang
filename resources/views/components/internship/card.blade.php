@@ -1,7 +1,8 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div wire:key="internship-card-{{ $internship->id }}">
+<div data-aos="fade-up" data-aos-duration="500" data-aos-once="true" data-aos-anchor-placement="top-bottom"
+     wire:key="internship-card-{{ $internship->id }}">
     <flux:modal.trigger name="internship-{{ $internship->id }}" wire:key="trigger-{{ $internship->id }}">
         <div
             class="p-6 block rounded-lg shadow outline outline-gray-100 dark:outline-gray-500 hover:outline-blue-500 transition-colors duration-300 cursor-pointer dark:shadow-none overflow-hidden bg-white/30 backdrop-blur-md dark:bg-gray-900/30 h-full">
@@ -10,23 +11,8 @@
                     <h1 class="text-lg md:text-xl font-medium">{{ $internship->job_title }}</h1>
                     <h2 class="md:text-lg">{{ $internship->company }}</h2>
                     <p class="text-sm md:text-base">{{ $internship->location }}</p>
-                    <div class="flex sm:block justify-between items-center space-y-1">
-                        <div class="flex items-center space-x-2 sm:ml-auto w-fit order-2">
-                            <div class="flex items-center space-x-1">
-                                <flux:icon.academic-cap variant="solid" class="text-blue-500"/>
-                                <flux:text>{{ $internship->vocationalMajor->major_name }}</flux:text>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <flux:icon.heart variant="solid" class="text-red-500"/>
-                                <flux:text>{{ $internship->likes_count }}</flux:text>
-                            </div>
-                        </div>
-                        <div class="sm:flex items-center justify-between sm:space-x-2">
-                            <flux:text>Posted {{ $internship->created_at->diffForHumans() }}</flux:text>
-                            <flux:text>Closes
-                                on {{ Carbon::parse($internship->end_date)->format("D, d M Y") }}</flux:text>
-                        </div>
-                    </div>
+                    <div>Posted {{ $internship->created_at->diffForHumans() }}, ended
+                        in {{ Carbon::parse($internship->end_date)->diffForHumans() }}</div>
                 </div>
             </div>
         </div>
@@ -100,11 +86,6 @@
                                      wire:loading.class="pointer-events-none animate-pulse" wire:target="toggleLike"/>
                     </flux:tooltip>
                 @endif
-                <flux:modal.trigger name="share-internship-{{ $internship->id }}">
-                    <flux:tooltip content="Share this post">
-                        <flux:button icon="share" color="zinc" variant="primary" icon:variant="outline"/>
-                    </flux:tooltip>
-                </flux:modal.trigger>
             </div>
             <div class="space-y-2 [&_div]:space-y-1">
                 <div>
@@ -128,21 +109,6 @@
                     </div>
                 @endif
             </div>
-        </div>
-    </flux:modal>
-    <flux:modal class="max-w-[90%] w-full sm:max-w-lg outline-none" name="share-internship-{{ $internship->id }}">
-        <div class="space-y-3">
-            <div>
-                <flux:heading class="text-xl">Internship Details</flux:heading>
-            </div>
-            <flux:separator/>
-            <div>
-                <flux:heading size="lg">
-                    Share this post
-                </flux:heading>
-                <flux:input copyable="true" readonly="true"
-                            value="{{ route('internships.index' ,$internship->getKey()) }}"/>
-           </div>
         </div>
     </flux:modal>
 </div>
