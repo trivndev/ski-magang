@@ -4,6 +4,7 @@ namespace App\Livewire\Internships;
 
 use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
+use App\Traits\WithQueryFilterAndSearch;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,27 +12,11 @@ use Livewire\WithPagination;
 #[layout('components.layouts.main-app')]
 class Index extends Component
 {
-    use WithPagination, HandlesInternshipsInteractions;
+    use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
 
-    public string $searchQuery = '';
-    public array $selectedMajor = [];
-
-    public string $sortBy = '';
-
-
-    public function searchPost()
+    public function mount()
     {
-        $this->resetPage();
-    }
-
-    public function applyFilters()
-    {
-        $this->resetPage();
-    }
-
-    public function clearFilters()
-    {
-        $this->reset();
+        $this->initDraftFiltersFromUrl();
     }
 
     public function toggleLike(Internship $internshipId)
