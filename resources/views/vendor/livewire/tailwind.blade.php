@@ -41,7 +41,6 @@
 
             <div>
                 <span class="relative z-0 inline-flex rtl:flex-row-reverse shadow-sm rounded-md">
-                    {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
                         <span aria-disabled="true" aria-label="{{ __('pagination.previous') }}">
                             <span class="relative inline-flex items-center px-2 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 cursor-default rounded-l-md leading-5 dark:bg-gray-800 dark:border-gray-600" aria-hidden="true">
@@ -58,7 +57,6 @@
                         </button>
                     @endif
 
-                    {{-- Pagination Elements (limited to max 5 pages) --}}
                     @php
                         $total = $paginator->lastPage();
                         $current = $paginator->currentPage();
