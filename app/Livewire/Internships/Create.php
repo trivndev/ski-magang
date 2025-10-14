@@ -16,6 +16,9 @@ class Create extends Component
 {
     use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
 
+    public array $selected = [];
+    public bool $selectMode = false;
+
     public function mount()
     {
         $this->initDraftFiltersFromUrl();
@@ -29,6 +32,17 @@ class Create extends Component
     public function toggleBookmark(Internship $internshipId)
     {
         $this->bookmarkInteraction($internshipId);
+    }
+
+    public function bulkDelete(): void
+    {
+        if (empty($this->selected)) return;
+
+        Internship::whereIn('id', $this->selected)
+            ->where('author_id', auth()->id())
+            ->delete();
+
+        $this->selected = [];
     }
 
     public function render()

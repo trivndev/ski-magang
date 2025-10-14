@@ -14,6 +14,9 @@ class LikedPost extends Component
 {
     use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
 
+    public array $selected = [];
+    public bool $selectMode = false;
+
     public function mount()
     {
         $this->initDraftFiltersFromUrl();
@@ -27,6 +30,21 @@ class LikedPost extends Component
     public function toggleBookmark(Internship $internshipId)
     {
         $this->bookmarkInteraction($internshipId);
+    }
+
+    public function bulkUnlike(): void
+    {
+        if (empty($this->selected)) return;
+
+        $internships = Internship::whereIn('id', $this->selected)
+            ->whereHas('likes', fn($q) => $q->where('user_id', auth()->id()))
+            ->get();
+
+        foreach ($internships as $internship) {
+            $this->likeInteraction($internship);
+        }
+
+        $this->selected = [];
     }
 
     public function render()
