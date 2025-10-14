@@ -17,7 +17,7 @@
         });
     </script>
 @endpush
-<div class="space-x-12 space-y-8 mx-auto max-w-7xl py-8 px-4 md:py-16">
+<div class="space-x-12 space-y-8 mx-auto max-w-7xl py-8 px-8 md:py-16">
     <div class="space-y-4 w-full">
         <flux:heading class="text-xl">
             Liked Posts
@@ -43,6 +43,7 @@
             :selectMode="$selectMode"
             :selectedCount="count($selected)"
             :idsJson="json_encode($internships->pluck('id')->toArray())"
+            :hasItems="$internships->count() > 0"
             mainActionMethod="bulkUnlike"
             mainActionLabel="Unlike selected"
         />
