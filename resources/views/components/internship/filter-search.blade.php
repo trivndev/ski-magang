@@ -1,5 +1,5 @@
 @php use App\Models\VocationalMajor; @endphp
-<div class="flex w-full justify-between items-center">
+<div class="flex w-full items-center gap-3 justify-between">
     <form class="hidden md:block" wire:submit.prevent="searchPost">
         <div class="flex gap-3 items-center">
             <flux:input placeholder="Search post" icon="magnifying-glass" class="max-w-xs"
@@ -50,7 +50,7 @@
             </form>
         </div>
     </flux:modal>
-    @if(request()->routeIs('internships.create'))
+    @if(!empty($isCreatePage))
         <flux:modal name="create-post" class="max-w-[90%] w-full sm:max-w-xl outline-none max-h-128"
                     :dismissible="false">
             <div class="space-y-3">
@@ -113,15 +113,15 @@
             </div>
         </flux:modal>
     @endif
-    <div class="flex gap-3 w-fit items-center">
+    <div class="flex items-center gap-3 w-fit items-center">
         @if(isset($selectMode) && ($hasItems ?? true))
-            <flux:button variant="primary" color="zinc" class="order-first" wire:click="$toggle('selectMode')">
+            <flux:button variant="primary" color="zinc" class="shrink-0" wire:click="$toggle('selectMode')">
                 {{ ($selectMode ?? false) ? 'Done' : 'Select' }}
             </flux:button>
         @endif
-        @if(request()->routeIs('internships.create'))
+        @if(!empty($isCreatePage))
             <flux:modal.trigger name="create-post">
-                <flux:button icon="plus" color="zinc" variant="primary">
+                <flux:button icon="plus" color="zinc" variant="primary" class="shrink-0">
                     Create Post
                 </flux:button>
             </flux:modal.trigger>
