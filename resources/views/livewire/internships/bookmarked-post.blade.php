@@ -22,15 +22,29 @@
         <flux:heading class="text-xl">
             Bookmarked Posts
         </flux:heading>
-        <x-internship.filter-search/>
+        <x-internship.filter-search :selectMode="$selectMode" :hasItems="$internships->count() > 0"/>
     </div>
     <div data-aos="fade-up" data-aos-duration="500" data-aos-once="true" data-aos-anchor-placement="top-bottom"
          class="space-y-8">
         <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-8">
             @foreach($internships as $internship)
-                <x-internship.card :$internship/>
+                <div class="relative" x-data>
+                    @if($selectMode)
+                        <div class="absolute -top-3 -left-3 z-20 rounded-md bg-white/90 dark:bg-gray-900/90 ring-2 ring-blue-500 shadow p-1" x-on:click.stop>
+                            <flux:checkbox wire:model="selected" value="{{ $internship->id }}" wire:key="select-{{ $internship->id }}-{{ in_array($internship->id, $selected ?? []) ? '1' : '0' }}"/>
+                        </div>
+                    @endif
+                    <x-internship.card :$internship/>
+                </div>
             @endforeach
         </div>
         {{ $internships->links() }}
+        <x-internship.bulk-select-toolbar
+            :selectMode="$selectMode"
+            :selectedCount="count($selected)"
+            :idsJson="json_encode($internships->pluck('id')->toArray())"
+            mainActionMethod="bulkRemoveBookmark"
+            mainActionLabel="Remove bookmark"
+        />
     </div>
 </div>
