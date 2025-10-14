@@ -114,6 +114,11 @@
         </flux:modal>
     @endif
     <div class="flex gap-3 w-fit items-center">
+        @if(isset($selectMode) && ($hasItems ?? true))
+            <flux:button variant="primary" color="zinc" class="order-first" wire:click="$toggle('selectMode')">
+                {{ ($selectMode ?? false) ? 'Done' : 'Select' }}
+            </flux:button>
+        @endif
         @if(request()->routeIs('internships.create'))
             <flux:modal.trigger name="create-post">
                 <flux:button icon="plus" color="zinc" variant="primary">
@@ -121,12 +126,12 @@
                 </flux:button>
             </flux:modal.trigger>
         @endif
-        <flux:modal.trigger name="filter-posts" class="flex md:hidden">
+        <flux:modal.trigger name="filter-posts" class="hidden md:flex">
             <flux:button icon="adjustments-horizontal" variant="primary">
                 Filter
             </flux:button>
         </flux:modal.trigger>
-        <flux:modal.trigger name="filter-posts" class="hidden md:flex">
+        <flux:modal.trigger name="filter-posts" class="flex md:hidden">
             <flux:button icon="adjustments-horizontal" variant="primary"/>
         </flux:modal.trigger>
     </div>
