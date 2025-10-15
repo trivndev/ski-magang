@@ -51,67 +51,7 @@
         </div>
     </flux:modal>
     @if(!empty($isCreatePage))
-        <flux:modal name="create-post" class="max-w-[90%] w-full sm:max-w-xl outline-none max-h-128"
-                    :dismissible="false">
-            <div class="space-y-3">
-                <div>
-                    <div>
-                        <flux:heading class="text-xl">Add New Post</flux:heading>
-                    </div>
-                    <flux:separator/>
-                </div>
-                <form class="space-y-6">
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <flux:label>
-                            Title
-                        </flux:label>
-                        <flux:input placeholder="Title"/>
-                    </div>
-                </form>
-            </div>
-        </flux:modal>
+        <x-internship.create-post-modal :$vocationalMajors/>
     @endif
     <div class="flex items-center gap-3 w-fit items-center">
         @if(isset($selectMode) && ($hasItems ?? true))
