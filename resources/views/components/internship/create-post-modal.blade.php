@@ -1,0 +1,126 @@
+<flux:modal name="create-post" class="max-w-[90%] w-full sm:max-w-xl outline-none max-h-128" :dismissible="false">
+    <div class="space-y-5">
+        <div>
+            <div>
+                <flux:heading class="text-xl">Add New Post</flux:heading>
+            </div>
+            <flux:separator/>
+        </div>
+        <form class="space-y-6" wire:submit.prevent="createPost">
+            <flux:fieldset class="space-y-6">
+                <flux:field>
+                    <flux:input
+                        label="Job Title" badge="required"
+                        placeholder="Enter job title"
+                        wire:model.blur="internshipForm.job_title"
+                        value="{{ old('job_title') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:input badge="required"
+                                label="Company"
+                                placeholder="Company name"
+                                wire:model.blur="internshipForm.company"
+                                value="{{ old('company') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:input
+                        label="Location" badge="required"
+                        placeholder="Job location"
+                        wire:model.blur="internshipForm.location"
+                        value="{{ old('location') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:textarea
+                        label="Job Description" badge="required"
+                        placeholder="Describe the job in detail"
+                        wire:model.blur="internshipForm.job_description"
+                    >{{ old('job_description') }}</flux:textarea>
+                </flux:field>
+
+                <flux:field>
+                    <flux:textarea
+                        label="Requirements" badge="required"
+                        placeholder="List the qualifications or requirements"
+                        wire:model.blur="internshipForm.requirements"
+                    >{{ old('requirements') }}</flux:textarea>
+                </flux:field>
+
+                <flux:field>
+                    <flux:textarea
+                        label="Benefits"
+                        placeholder="Describe the benefits (optional)"
+                        wire:model.blur="internshipForm.benefits"
+                    >{{ old('benefits') }}</flux:textarea>
+                </flux:field>
+
+                <flux:field>
+                    <flux:input
+                        label="Contact Email" badge="required"
+                        placeholder="email@example.com"
+                        wire:model.blur="internshipForm.contact_email"
+                        value="{{ old('contact_email') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:input
+                        label="Contact Phone" badge="required"
+                        placeholder="Phone number"
+                        wire:model.blur="internshipForm.contact_phone"
+                        value="{{ old('contact_phone') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:input
+                        label="Contact Name" badge="required"
+                        placeholder="Contact person name"
+                        wire:model.blur="internshipForm.contact_name"
+                        value="{{ old('contact_name') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:input badge="required"
+                                label="End Date"
+                                type="date"
+                                wire:model.blur="internshipForm.end_date"
+                                value="{{ old('end_date') }}"
+                    />
+                </flux:field>
+
+                <flux:field>
+                    <flux:select badge="required"
+                                 label="Vocational Major"
+                                 placeholder="Select major"
+                                 wire:model.blur="internshipForm.vocational_major_id"
+                    >
+                        <option value="">Select a major</option>
+                        @foreach ($vocationalMajors as $vocationalMajor)
+                            <option value="{{ $vocationalMajor->id }}" {{ old('vocational_major_id') == $vocationalMajor->id ? 'selected' : '' }}>
+                                {{ $vocationalMajor->major_name}}
+                            </option>
+                        @endforeach
+                    </flux:select>
+                </flux:field>
+            </flux:fieldset>
+
+            <div class="flex gap-3 justify-end">
+                <flux:modal.close name="create-post">
+                    <flux:button variant="primary" color="red">
+                        Cancel
+                    </flux:button>
+                </flux:modal.close>
+                <flux:button variant="primary" type="submit">
+                    Create Post
+                </flux:button>
+            </div>
+        </form>
+    </div>
+</flux:modal>

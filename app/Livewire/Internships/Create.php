@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Internships;
 
+use App\Livewire\Forms\InternshipForm;
 use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
 use App\Traits\WithQueryFilterAndSearch;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,6 +14,8 @@ use Livewire\WithPagination;
 class Create extends Component
 {
     use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
+
+    public InternshipForm $internshipForm;
 
     public array $selected = [];
     public bool $selectMode = false;
@@ -43,6 +44,13 @@ class Create extends Component
             ->delete();
 
         $this->selected = [];
+    }
+
+    public function createPost()
+    {
+        $this->internshipForm->store();
+
+        session()->flash('success', 'Internship created successfully.');
     }
 
     public function render()
