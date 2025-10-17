@@ -17,13 +17,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            UsersRoleSeeder::class,
             UserSeeder::class,
             VocationalMajorSeeder::class,
             InternshipsPostStatusSeeder::class,
             InternshipSeeder::class,
             LikedPostSeeder::class,
             BookmarkedPostSeeder::class,
+            RolePermissionSeeder::class,
         ]);
         $threeLatestInternships = Internship::query()
             ->with(['author', 'status'])

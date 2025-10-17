@@ -3,7 +3,7 @@
     <form class="hidden md:block" wire:submit.prevent="searchPost">
         <div class="flex gap-3 items-center">
             <flux:input placeholder="Search post" icon="magnifying-glass" class="max-w-xs"
-                        wire:model.defer="draftSearchQuery"/>
+                        wire:model="draftSearchQuery"/>
             <flux:button variant="primary" type="submit">Search</flux:button>
         </div>
     </form>
@@ -17,7 +17,7 @@
             <form class="space-y-6" wire:submit.prevent="applyFilters">
                 <div class="block md:hidden">
                     <div class="flex gap-3 items-center">
-                        <flux:input wire:model.defer="draftSearchQuery" placeholder="Search post"
+                        <flux:input wire:model="draftSearchQuery" placeholder="Search post"
                                     icon="magnifying-glass"/>
                         <flux:button variant="primary">Search</flux:button>
                     </div>
@@ -26,7 +26,7 @@
                     <flux:label>
                         Sort By
                     </flux:label>
-                    <flux:select placeholder="Default Newest" wire:model.defer="draftSortBy">
+                    <flux:select placeholder="Default Newest" wire:model="draftSortBy">
                         <flux:select.option value="newest">Newest</flux:select.option>
                         <flux:select.option value="oldest">Oldest</flux:select.option>
                         <flux:select.option value="likes">Most liked</flux:select.option>
@@ -53,9 +53,9 @@
     @if(!empty($isCreatePage))
         <x-internship.create-post-modal :$vocationalMajors/>
     @endif
-    <div class="flex items-center gap-3 w-fit items-center">
+    <div class="flex gap-3 w-fit items-center">
         @if(isset($selectMode) && ($hasItems ?? true))
-            <flux:button variant="primary" color="zinc" class="shrink-0" wire:click="$toggle('selectMode')">
+            <flux:button variant="primary" color="red" class="shrink-0" wire:click="$toggle('selectMode')">
                 {{ ($selectMode ?? false) ? 'Done' : 'Select' }}
             </flux:button>
         @endif
