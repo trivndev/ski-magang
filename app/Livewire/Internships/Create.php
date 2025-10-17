@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Internships;
 
-use App\Livewire\Forms\InternshipForm;
+use App\Livewire\Internships\Forms\InternshipForm;
 use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
 use App\Traits\WithQueryFilterAndSearch;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[layout('components.layouts.main-app')]
+#[layout('components.layouts.main-app'), Title('Create Post | SKI MAGANG')]
 class Create extends Component
 {
     use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
@@ -98,6 +99,6 @@ class Create extends Component
         }
         return view('livewire.internships.create', [
             'internships' => $query->paginate(12),
-        ])->layoutData(['title' => "Internships create"]);
+        ]);
     }
 }

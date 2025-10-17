@@ -17,12 +17,14 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Nicolas',
             'email' => 'nicolas@gmail.com',
-            'role_id' => 1,
         ]);
         User::factory()->create([
             'name' => 'Super Admin',
             'email' => 'admin@example.com',
-            'role_id' => 2,
+        ]);
+        User::factory()->create([
+            'name' => 'normal user',
+            'email' => 'user@gmail.com'
         ]);
         User::factory(100)->create();
     }

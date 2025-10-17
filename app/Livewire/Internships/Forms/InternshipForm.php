@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Internships\Forms;
 
 use App\Models\Internship;
 use Illuminate\Support\Facades\Auth;
@@ -30,22 +30,22 @@ class InternshipForm extends Form
     #[Validate]
     public string $end_date = '';
     #[Validate]
-    public string $vocational_major_id = '';
+    public $vocational_major_id = '';
 
     public function rules(): array
     {
         return [
-            'job_title' => 'required|string|min:4|max:255',
-            'company' => 'required|string|min:5|max:255',
-            'location' => 'required|string|min:5|max:255',
-            'job_description' => 'required|string|min:16|max:255',
-            'requirements' => 'required|string|min:16|max:255',
+            'job_title' => 'required|string|min:2|max:255',
+            'company' => 'required|string|min:3|max:255',
+            'location' => 'required|string|min:8|max:255',
+            'job_description' => 'required|string|min:32|max:255',
+            'requirements' => 'required|string|min:32|max:255',
             'benefits' => 'string|max:255',
             'contact_email' => 'required|email|max:255|email:dns',
             'contact_phone' => 'required|regex:/^[0-9+\s-]+$/|min:8|max:20|string',
             'contact_name' => 'required|string|min:3|max:64',
             'end_date' => 'required|date',
-            'vocational_major_id' => 'required|exists:vocational_majors,id',
+            'vocational_major_id' => 'required|exists:vocational_majors,id|numeric',
         ];
     }
 

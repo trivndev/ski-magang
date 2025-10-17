@@ -12,7 +12,7 @@
                     <flux:input
                         label="Job Title" badge="required"
                         placeholder="Enter job title"
-                        wire:model.blur="internshipForm.job_title"
+                        wire:model.live.debounce.500ms="internshipForm.job_title"
                         value="{{ old('job_title') }}"
                     />
                 </flux:field>
@@ -21,7 +21,7 @@
                     <flux:input badge="required"
                                 label="Company"
                                 placeholder="Company name"
-                                wire:model.blur="internshipForm.company"
+                                wire:model.live.debounce.500ms="internshipForm.company"
                                 value="{{ old('company') }}"
                     />
                 </flux:field>
@@ -30,7 +30,7 @@
                     <flux:input
                         label="Location" badge="required"
                         placeholder="Job location"
-                        wire:model.blur="internshipForm.location"
+                        wire:model.live.debounce.500ms="internshipForm.location"
                         value="{{ old('location') }}"
                     />
                 </flux:field>
@@ -39,7 +39,7 @@
                     <flux:textarea
                         label="Job Description" badge="required"
                         placeholder="Describe the job in detail"
-                        wire:model.blur="internshipForm.job_description"
+                        wire:model.live.debounce.500ms="internshipForm.job_description"
                     >{{ old('job_description') }}</flux:textarea>
                 </flux:field>
 
@@ -47,7 +47,7 @@
                     <flux:textarea
                         label="Requirements" badge="required"
                         placeholder="List the qualifications or requirements"
-                        wire:model.blur="internshipForm.requirements"
+                        wire:model.live.debounce.500ms="internshipForm.requirements"
                     >{{ old('requirements') }}</flux:textarea>
                 </flux:field>
 
@@ -55,7 +55,7 @@
                     <flux:textarea
                         label="Benefits"
                         placeholder="Describe the benefits (optional)"
-                        wire:model.blur="internshipForm.benefits"
+                        wire:model.live.debounce.500ms="internshipForm.benefits"
                     >{{ old('benefits') }}</flux:textarea>
                 </flux:field>
 
@@ -63,7 +63,7 @@
                     <flux:input
                         label="Contact Email" badge="required"
                         placeholder="email@example.com"
-                        wire:model.blur="internshipForm.contact_email"
+                        wire:model.live.debounce.500ms="internshipForm.contact_email"
                         value="{{ old('contact_email') }}"
                     />
                 </flux:field>
@@ -72,7 +72,7 @@
                     <flux:input
                         label="Contact Phone" badge="required"
                         placeholder="Phone number"
-                        wire:model.blur="internshipForm.contact_phone"
+                        wire:model.live.debounce.500ms="internshipForm.contact_phone"
                         value="{{ old('contact_phone') }}"
                     />
                 </flux:field>
@@ -81,7 +81,7 @@
                     <flux:input
                         label="Contact Name" badge="required"
                         placeholder="Contact person name"
-                        wire:model.blur="internshipForm.contact_name"
+                        wire:model.live.debounce.500ms="internshipForm.contact_name"
                         value="{{ old('contact_name') }}"
                     />
                 </flux:field>
@@ -90,7 +90,7 @@
                     <flux:input badge="required"
                                 label="End Date"
                                 type="date"
-                                wire:model.blur="internshipForm.end_date"
+                                wire:model.live.debounce.500ms="internshipForm.end_date"
                                 value="{{ old('end_date') }}"
                     />
                 </flux:field>
@@ -99,9 +99,9 @@
                     <flux:select badge="required"
                                  label="Vocational Major"
                                  placeholder="Select major"
-                                 wire:model.blur="internshipForm.vocational_major_id"
+                                 wire:model.live.debounce.500ms="internshipForm.vocational_major_id"
                     >
-                        <option value="">Select a major</option>
+                        <option>Select a major</option>
                         @foreach ($vocationalMajors as $vocationalMajor)
                             <option value="{{ $vocationalMajor->id }}" {{ old('vocational_major_id') == $vocationalMajor->id ? 'selected' : '' }}>
                                 {{ $vocationalMajor->major_name}}

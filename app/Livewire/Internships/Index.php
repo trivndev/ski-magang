@@ -6,10 +6,11 @@ use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
 use App\Traits\WithQueryFilterAndSearch;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[layout('components.layouts.main-app')]
+#[layout('components.layouts.main-app'), Title('Internship Opportunities | SKI MAGANG')]
 class Index extends Component
 {
     use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
@@ -74,6 +75,6 @@ class Index extends Component
 
         return view('livewire.internships.index', [
             'internships' => $query->paginate(12),
-        ])->layoutData(['title' => "Internships information"]);
+        ]);
     }
 }
