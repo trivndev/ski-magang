@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Auth;
 
-use App\Models\UsersRole;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
