@@ -1,4 +1,4 @@
-@php use App\Models\VocationalMajor; @endphp
+@php use App\Models\VocationalMajor; use App\Models\InternshipsPostStatus; @endphp
 <div class="flex w-full items-center gap-3 justify-between">
     <form class="hidden md:block" wire:submit.prevent="searchPost">
         <div class="flex gap-3 items-center">
@@ -32,16 +32,30 @@
                         <flux:select.option value="likes">Most liked</flux:select.option>
                     </flux:select>
                 </div>
-                <div>
-                    <flux:checkbox.group label="Select Major" wire:model.defer="draftSelectedMajor">
-                        @php
-                            $vocationalMajors = VocationalMajor::all();
-                        @endphp
-                        @foreach($vocationalMajors as $vocationalMajor)
-                            <flux:checkbox label="{{ $vocationalMajor->major_name }}"
-                                           value="{{ $vocationalMajor->id }}"/>
-                        @endforeach
-                    </flux:checkbox.group>
+                <div class="grid grid-cols-2">
+                    <div>
+                        <flux:checkbox.group label="Select Major" wire:model="draftSelectedMajor">
+                            @php
+                                $vocationalMajors = VocationalMajor::all();
+                            @endphp
+                            @foreach($vocationalMajors as $vocationalMajor)
+                                <flux:checkbox label="{{ $vocationalMajor->major_name }}"
+                                               value="{{ $vocationalMajor->id }}"/>
+                            @endforeach
+                        </flux:checkbox.group>
+                    </div>
+                    @if(!empty($isCreatePage))
+                        <div>
+                            <flux:checkbox.group label="Select Status" wire:model="draftSelectedStatus">
+                                @php
+                                    $statuses = InternshipsPostStatus::query()->pluck('status');
+                                @endphp
+                                @foreach($statuses as $status)
+                                    <flux:checkbox label="{{ $status }}" value="{{ $status }}"/>
+                                @endforeach
+                            </flux:checkbox.group>
+                        </div>
+                    @endif
                 </div>
                 <div class="justify-self-end space-x-1">
                     <flux:button variant="primary" color="red" wire:click="clearFilters">Reset</flux:button>

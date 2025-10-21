@@ -42,7 +42,7 @@
                                            wire:key="select-{{ $internship->id }}-{{ in_array($internship->id, $selected ?? []) ? '1' : '0' }}"/>
                         </div>
                     @endif
-                    <x-internship.card :$internship/>
+                    <x-internship.card :$internship :is-create-route="true"/>
                 </div>
             @endforeach
         </div>

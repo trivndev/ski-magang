@@ -8,6 +8,7 @@ use App\Traits\HandlesInternshipsInteractions;
 use App\Traits\WithQueryFilterAndSearch;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -21,17 +22,37 @@ class Create extends Component
     public array $selected = [];
     public bool $selectMode = false;
 
+    #[Url(as: 'statuses', except: [])]
+    public array $selectedStatus = [];
+    public array $draftSelectedStatus = [];
+
+    protected function initDraftFiltersFromUrlExtra(): void
+    {
+        $this->draftSelectedStatus = $this->selectedStatus;
+    }
+
+    protected function applyDraftsToUrlStateExtra(): void
+    {
+        $this->selectedStatus = $this->draftSelectedStatus;
+    }
+
+    protected function clearFiltersExtra(): void
+    {
+        $this->selectedStatus = [];
+        $this->draftSelectedStatus = [];
+    }
+
     public function mount()
     {
         $this->initDraftFiltersFromUrl();
     }
 
-    public function toggleLike(Internship $internshipId)
+    public function toggleLike($internshipId)
     {
         $this->likeInteraction($internshipId);
     }
 
-    public function toggleBookmark(Internship $internshipId)
+    public function toggleBookmark($internshipId)
     {
         $this->bookmarkInteraction($internshipId);
     }
@@ -63,6 +84,7 @@ class Create extends Component
         ];
         $keyword = $this->searchQuery;
         $selectedMajor = $this->selectedMajor;
+        $selectedStatus = $this->selectedStatus;
 
         $query = Internship::query()
             ->with(['author', 'status'])
@@ -72,12 +94,15 @@ class Create extends Component
                 'bookmarks as bookmarked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
             ])
             ->whereHas('author', fn($q) => $q->where('id', auth()->id()))
-            ->whereRelation('status', 'status', 'Approved')
             ->where(function ($q) use ($fields, $keyword) {
                 foreach ($fields as $field) {
                     $q->orWhere($field, 'like', "%{$keyword}%");
                 }
             });
+
+        if (!empty($selectedStatus)) {
+            $query->whereHas('status', fn($q) => $q->whereIn('status', $selectedStatus));
+        }
 
         if (!empty($selectedMajor)) {
             $query->whereIn('vocational_major_id', $selectedMajor);
