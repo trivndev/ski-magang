@@ -37,11 +37,11 @@ class InternshipForm extends Form
         return [
             'job_title' => 'required|string|min:2|max:255',
             'company' => 'required|string|min:3|max:255',
-            'location' => 'required|string|min:8|max:255',
+            'location' => 'required|string|min:6|max:255',
             'job_description' => 'required|string|min:32|max:255',
             'requirements' => 'required|string|min:32|max:255',
             'benefits' => 'string|max:255',
-            'contact_email' => 'required|email|max:255|email:dns',
+            'contact_email' => 'email|max:255|email:dns',
             'contact_phone' => 'required|regex:/^[0-9+\s-]+$/|min:8|max:20|string',
             'contact_name' => 'required|string|min:3|max:64',
             'end_date' => 'required|date',

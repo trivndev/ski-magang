@@ -20,12 +20,12 @@ class Index extends Component
         $this->initDraftFiltersFromUrl();
     }
 
-    public function toggleLike(Internship $internshipId)
+    public function toggleLike($internshipId)
     {
         $this->likeInteraction($internshipId);
     }
 
-    public function toggleBookmark(Internship $internshipId)
+    public function toggleBookmark($internshipId)
     {
         $this->bookmarkInteraction($internshipId);
     }
@@ -47,7 +47,6 @@ class Index extends Component
                 'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
                 'bookmarks as bookmarked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
             ])
-            ->whereRelation('status', 'status', 'Approved')
             ->where(function ($q) use ($fields, $keyword) {
                 foreach ($fields as $field) {
                     $q->orWhere($field, 'like', "%{$keyword}%");

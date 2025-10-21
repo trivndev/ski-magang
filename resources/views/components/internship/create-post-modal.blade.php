@@ -45,7 +45,8 @@
 
                 <flux:field>
                     <flux:textarea
-                        label="Requirements" badge="required"
+                        label="Requirements"
+                        badge="required"
                         placeholder="List the qualifications or requirements"
                         wire:model.live.debounce.500ms="internshipForm.requirements"
                     >{{ old('requirements') }}</flux:textarea>
@@ -54,6 +55,7 @@
                 <flux:field>
                     <flux:textarea
                         label="Benefits"
+                        badge="optional"
                         placeholder="Describe the benefits (optional)"
                         wire:model.live.debounce.500ms="internshipForm.benefits"
                     >{{ old('benefits') }}</flux:textarea>
@@ -61,7 +63,7 @@
 
                 <flux:field>
                     <flux:input
-                        label="Contact Email" badge="required"
+                        label="Contact Email" badge="optional"
                         placeholder="email@example.com"
                         wire:model.live.debounce.500ms="internshipForm.contact_email"
                         value="{{ old('contact_email') }}"
@@ -103,7 +105,8 @@
                     >
                         <option>Select a major</option>
                         @foreach ($vocationalMajors as $vocationalMajor)
-                            <option value="{{ $vocationalMajor->id }}" {{ old('vocational_major_id') == $vocationalMajor->id ? 'selected' : '' }}>
+                            <option
+                                value="{{ $vocationalMajor->id }}" {{ old('vocational_major_id') == $vocationalMajor->id ? 'selected' : '' }}>
                                 {{ $vocationalMajor->major_name}}
                             </option>
                         @endforeach

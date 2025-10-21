@@ -4,13 +4,23 @@
         <div class="text-white flex flex-col justify-center items-center w-full">
             <div>
                 <canvas id="greetings" class="min-size-96 w-full"></canvas>
+                @vite('resources/js/lottie.js')
                 <script type="module">
-                    const dotLottie = new DotLottie({
-                        autoplay: true,
-                        loop: true,
-                        canvas: document.querySelector('#greetings'),
-                        src: "{{ asset('lotties/Welcome.lottie') }}"
-                    });
+                    (function () {
+                        try {
+                            if (typeof window.initDotLottie !== 'function') {
+                                throw new Error('initDotLottie is not available');
+                            }
+                            window.initDotLottie({
+                                id: 'greetings',
+                                src: "{{ asset('lotties/Welcome.lottie') }}",
+                                autoplay: true,
+                                loop: true,
+                            });
+                        } catch (e) {
+                            console.error('Failed to initialize Lottie:', e);
+                        }
+                    })();
                 </script>
             </div>
         </div>

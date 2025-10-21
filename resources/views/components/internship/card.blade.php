@@ -1,3 +1,4 @@
+@props(['internship' => null, 'isCreateRoute' => false])
 @php
     use Carbon\Carbon;
 @endphp
@@ -7,20 +8,54 @@
             class="p-6 block rounded-lg shadow outline outline-gray-100 dark:outline-gray-500 hover:outline-blue-500 transition-colors duration-300 cursor-pointer dark:shadow-none overflow-hidden bg-white/30 backdrop-blur-md dark:bg-gray-900/30 h-full">
             <div class="flex flex-col justify-between h-full space-y-2">
                 <div class="space-y-1">
+                    @if($isCreateRoute)
+                        <div class="flex items-center justify-between">
+                            <div>
+                                @php($statusLabel = optional($internship->status)->status)
+                                @switch($statusLabel)
+                                    @case('Pending')
+                                        <flux:badge color="zinc">Pending</flux:badge>
+                                        @break
+                                    @case('Approved')
+                                        <flux:badge color="green">Approved</flux:badge>
+                                        @break
+                                    @case('Rejected')
+                                        <flux:badge color="red">Rejected</flux:badge>
+                                        @break
+                                    @default
+                                        @if($statusLabel)
+                                            <flux:badge color="zinc">{{ $statusLabel }}</flux:badge>
+                                        @endif
+                                @endswitch
+                            </div>
+                            <div class="flex items-center space-x-2 sm:ml-auto w-fit order-2">
+                                <div class="flex items-center space-x-1">
+                                    <flux:icon.academic-cap variant="solid" class="text-blue-500"/>
+                                    <flux:text>{{ $internship->vocationalMajor->major_name }}</flux:text>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <flux:icon.heart variant="solid" class="text-red-500"/>
+                                    <flux:text>{{ $internship->likes_count }}</flux:text>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <h1 class="text-lg md:text-xl font-medium">{{ $internship->job_title }}</h1>
                     <h2 class="md:text-lg">{{ $internship->company }}</h2>
                     <p class="text-sm md:text-base">{{ $internship->location }}</p>
                     <div class="flex sm:block justify-between items-center space-y-1">
-                        <div class="flex items-center space-x-2 sm:ml-auto w-fit order-2">
-                            <div class="flex items-center space-x-1">
-                                <flux:icon.academic-cap variant="solid" class="text-blue-500"/>
-                                <flux:text>{{ $internship->vocationalMajor->major_name }}</flux:text>
+                        @if(!$isCreateRoute)
+                            <div class="flex items-center space-x-2 sm:ml-auto w-fit order-2">
+                                <div class="flex items-center space-x-1">
+                                    <flux:icon.academic-cap variant="solid" class="text-blue-500"/>
+                                    <flux:text>{{ $internship->vocationalMajor->major_name }}</flux:text>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <flux:icon.heart variant="solid" class="text-red-500"/>
+                                    <flux:text>{{ $internship->likes_count }}</flux:text>
+                                </div>
                             </div>
-                            <div class="flex items-center space-x-1">
-                                <flux:icon.heart variant="solid" class="text-red-500"/>
-                                <flux:text>{{ $internship->likes_count }}</flux:text>
-                            </div>
-                        </div>
+                        @endif
                         <div class="sm:flex items-center justify-between sm:space-x-2">
                             <flux:text>Posted {{ $internship->created_at->diffForHumans() }}</flux:text>
                             <flux:text>Closes
@@ -142,7 +177,7 @@
                 </flux:heading>
                 <flux:input copyable="true" readonly="true"
                             value="{{ route('internships.index' ,$internship->getKey()) }}"/>
-           </div>
+            </div>
         </div>
     </flux:modal>
 </div>

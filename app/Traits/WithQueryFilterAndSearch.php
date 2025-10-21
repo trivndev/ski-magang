@@ -24,6 +24,9 @@ trait WithQueryFilterAndSearch
         $this->draftSearchQuery = $this->searchQuery;
         $this->draftSelectedMajor = $this->selectedMajor;
         $this->draftSortBy = $this->sortBy;
+        if (method_exists($this, 'initDraftFiltersFromUrlExtra')) {
+            $this->initDraftFiltersFromUrlExtra();
+        }
     }
 
     protected function applyDraftsToUrlState(): void
@@ -31,6 +34,9 @@ trait WithQueryFilterAndSearch
         $this->searchQuery = $this->draftSearchQuery;
         $this->selectedMajor = $this->draftSelectedMajor;
         $this->sortBy = $this->draftSortBy;
+        if (method_exists($this, 'applyDraftsToUrlStateExtra')) {
+            $this->applyDraftsToUrlStateExtra();
+        }
 
         if (method_exists($this, 'resetPage')) {
             $this->resetPage();
@@ -56,9 +62,24 @@ trait WithQueryFilterAndSearch
         $this->draftSearchQuery = '';
         $this->draftSelectedMajor = [];
         $this->draftSortBy = '';
+        if (method_exists($this, 'clearFiltersExtra')) {
+            $this->clearFiltersExtra();
+        }
 
         if (method_exists($this, 'resetPage')) {
             $this->resetPage();
         }
+    }
+
+    protected function initDraftFiltersFromUrlExtra(): void
+    {
+    }
+
+    protected function applyDraftsToUrlStateExtra(): void
+    {
+    }
+
+    protected function clearFiltersExtra(): void
+    {
     }
 }

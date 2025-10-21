@@ -23,12 +23,12 @@ class LikedPost extends Component
         $this->initDraftFiltersFromUrl();
     }
 
-    public function toggleLike(Internship $internshipId)
+    public function toggleLike($internshipId)
     {
         $this->likeInteraction($internshipId);
     }
 
-    public function toggleBookmark(Internship $internshipId)
+    public function toggleBookmark($internshipId)
     {
         $this->bookmarkInteraction($internshipId);
     }
