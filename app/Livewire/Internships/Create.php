@@ -5,6 +5,7 @@ namespace App\Livewire\Internships;
 use App\Livewire\Internships\Forms\InternshipForm;
 use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
+use App\Traits\WithNotify;
 use App\Traits\WithQueryFilterAndSearch;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -15,7 +16,7 @@ use Livewire\WithPagination;
 #[layout('components.layouts.main-app'), Title('Create Post | SKI MAGANG')]
 class Create extends Component
 {
-    use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch;
+    use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch, WithNotify;
 
     public InternshipForm $internshipForm;
 
@@ -72,7 +73,7 @@ class Create extends Component
     {
         $this->internshipForm->store();
 
-        session()->flash('success', 'Internship created successfully.');
+        $this->notifySuccess('Create Post', 'Post has been created.');
     }
 
     public function render()
