@@ -1,21 +1,51 @@
-MIT License
+Polyform Noncommercial License 1.0.0
 
-Copyright (c) 2025 trivndev
+Copyright (c) [year] [name]
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software is licensed under the Polyform Noncommercial License 1.0.0.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+You may obtain a copy of the License at:
 
+    https://polyformproject.org/licenses/noncommercial/1.0.0/
+
+-------------------------------------------------------------------------------
+Polyform Noncommercial License 1.0.0
+
+Acceptance
+By using the software, you agree to all of the terms and conditions below.
+
+Copyright License
+The licensor grants you a copyright license to do everything with the software
+that would otherwise infringe the licensor’s copyright in it, except make
+commercial use of the software, for the purposes of:
+
+  1. running the software for your own personal use;
+  2. modifying the software; and
+  3. redistributing the software, with or without modifications.
+
+No Other Rights
+This license does not grant you any right in the patents, trademarks,
+service marks, or logos of the licensor.
+
+Noncommercial Purposes
+You may not use the software for any commercial purpose.  
+For example, this license does not permit:
+
+  1. running the software as part of a service offered for a fee;
+  2. using the software to provide consulting services;
+  3. using the software within a commercial product or service;
+  4. any use of the software by, or on behalf of, a for-profit organization.
+
+Notice
+If you redistribute the software, you must include this license with it,
+and retain the copyright notice above.
+
+No Warranty
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT.  
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+-------------------------------------------------------------------------------
