@@ -105,4 +105,7 @@ SKI MAGANG is a website for students of SMK Kristen Immanuel Pontianak to share 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## License
+This project is licensed under the Polyform Noncommercial License 1.0.0.  
+You may use, modify, and share it for noncommercial purposes only.  
+See [LICENSE](./LICENSE) for full text.
