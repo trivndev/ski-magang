@@ -9,7 +9,6 @@
     <title>{{ $title ?? 'Page Title' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @fluxAppearance
-    @stack('lottie-head')
     @stack('aos-head')
 </head>
 
@@ -20,13 +19,13 @@
 <flux:header container
              class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 place-content-center top-0 z-50 sticky">
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2"/>
-    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="max-lg:hidden"/>
+    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="max-lg:hidden" wire:navigate/>
     <flux:spacer/>
     <flux:navbar class="-mb-px max-lg:hidden">
-        <flux:navbar.item icon="home" :href="route('home')" :current="request()->routeIs('home')">Home
+        <flux:navbar.item icon="home" :href="route('home')" :current="request()->routeIs('home')" wire:navigate>Home
         </flux:navbar.item>
         <flux:navbar.item icon="user-group" href="{{ route('internships.index') }}"
-                          :current="request()->routeIs('internships.index')">Internships
+                          :current="request()->routeIs('internships.index')" wire:navigate>Internships
         </flux:navbar.item>
     </flux:navbar>
     <flux:spacer/>
@@ -39,23 +38,27 @@
                     <flux:text>{{ Auth::user()->email }}</flux:text>
                 </flux:navlist.group>
                 <flux:menu.separator/>
-                <flux:dropdown>
-                    <flux:navmenu>
-                        <flux:navlist.item href="{{ route('internships.create') }}"
-                                           :current="request()->routeIs('internships.create')" icon="user-group">Posted
-                            Internships
-                        </flux:navlist.item>
-                    </flux:navmenu>
-                </flux:dropdown>
+                @role('admin|supervisor')
+                <flux:navlist.item href="{{ route('admin.dashboard') }}" icon="identification" wire:navigate>
+                    Admin Dashboard
+                </flux:navlist.item>
+                @endrole
+                <flux:navlist.item href="{{ route('internships.create') }}"
+                                   :current="request()->routeIs('internships.create')" icon="user-group" wire:navigate>
+                    Posted
+                    Internships
+                </flux:navlist.item>
                 <flux:navlist.item href="{{ route('internships.liked') }}"
-                                   :current="request()->routeIs('internships.liked')" icon="heart">Liked Posts
+                                   :current="request()->routeIs('internships.liked')" icon="heart" wire:navigate>Liked
+                    Posts
                 </flux:navlist.item>
                 <flux:navlist.item href="{{ route('internships.bookmarked') }}"
-                                   :current="request()->routeIs('internships.bookmarked')" icon="cog-6-tooth">Bookmarked
+                                   :current="request()->routeIs('internships.bookmarked')" icon="cog-6-tooth"
+                                   wire:navigate>Bookmarked
                     Posts
                 </flux:navlist.item>
                 <flux:menu.separator/>
-                <flux:navlist.item href="/settings" icon="cog-6-tooth">Settings</flux:navlist.item>
+                <flux:navlist.item href="/settings" icon="cog-6-tooth" wire:navigate>Settings</flux:navlist.item>
                 <form method="POST" wire:submit.prevent action="{{ route('logout') }}">
                     @csrf
                     <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
@@ -90,18 +93,19 @@
 <flux:sidebar stashable sticky
               class="border-r border-zinc-200 bg-zinc-50 lg:hidden rtl:border-l rtl:border-r-0 dark:border-zinc-700 dark:bg-zinc-900">
     <flux:sidebar.toggle class="lg:hidden" icon="x-mark"/>
-    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="px-2 dark:hidden"/>
-    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="hidden px-2 dark:flex"/>
+    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="px-2 dark:hidden" wire:navigate/>
+    <flux:brand href="{{ route('home') }}" name="{{ config('app.name') }}" class="hidden px-2 dark:flex" wire:navigate/>
     <flux:navlist variant="outline" class="space-y-2!">
-        <flux:navlist.item icon="home" href="{{ route('home') }}" :current="request()->routeIs('home')">Home
+        <flux:navlist.item icon="home" href="{{ route('home') }}" :current="request()->routeIs('home')" wire:navigate>
+            Home
         </flux:navlist.item>
         <flux:navlist.item icon="user-group" href="{{ route('internships.index') }}"
-                           :current="request()->routeIs('internships.index')">Internships
+                           :current="request()->routeIs('internships.index')" wire:navigate>Internships
         </flux:navlist.item>
     </flux:navlist>
     <flux:spacer/>
     <flux:navlist variant="outline">
-        <flux:navlist.item icon="cog-6-tooth" href="#">Settings</flux:navlist.item>
+        <flux:navlist.item icon="cog-6-tooth" href="#" wire:navigate>Settings</flux:navlist.item>
         <flux:navlist.item icon="information-circle" href="#">Help</flux:navlist.item>
     </flux:navlist>
 </flux:sidebar>
@@ -140,7 +144,6 @@
 
 <x-penguin-ui.toast/>
 @fluxScripts
-@stack('lottie-script')
 @stack('aos-script')
 </body>
 

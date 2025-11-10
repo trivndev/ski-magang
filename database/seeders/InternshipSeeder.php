@@ -17,9 +17,18 @@ class InternshipSeeder extends Seeder
      */
     public function run(): void
     {
-        Internship::factory(1000)->recycle([
+        $internships = Internship::factory(1000)->recycle([
             User::all(),
             VocationalMajor::all(),
         ])->create();
+
+        // Soft delete a small random subset so the dashboard "Deleted Posts" shows data
+        $toDelete = $internships->random(max(10, (int) floor($internships->count() * 0.08))); // ~8%
+        foreach ($toDelete as $post) {
+            // pick a deleted_at between created_at and now
+            $deletedAt = fake()->dateTimeBetween($post->created_at, 'now');
+            $post->deleted_at = $deletedAt;
+            $post->saveQuietly();
+        }
     }
 }

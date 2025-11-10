@@ -19,6 +19,12 @@ class InternshipFactory extends Factory
      */
     public function definition(): array
     {
+        // Spread internships over the last 12 months so charts show month-to-month differences
+        $created = fake()->dateTimeBetween('-11 months', 'now');
+        $updated = fake()->dateTimeBetween($created, 'now');
+        // Ensure end_date is after created_at
+        $endDate = fake()->dateTimeBetween($created, (clone $created)->modify('+3 months'));
+
         return [
             'job_title' => fake()->jobTitle(),
             'company' => fake()->company(),
@@ -32,7 +38,9 @@ class InternshipFactory extends Factory
             'vocational_major_id' => VocationalMajor::factory(),
             'author_id' => User::factory(),
             'status_id' => InternshipsPostStatus::inRandomOrder()->value('id') ?? 1,
-            'end_date' => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'end_date' => $endDate,
+            'created_at' => $created,
+            'updated_at' => $updated,
         ];
     }
 }

@@ -1,4 +1,5 @@
 <x-layouts.main-app title="Welcome to SKI MAGANG">
+    @vite('resources/js/lottie.js')
     <section class="flex min-h-[70vh] flex-col items-center justify-center bg-white px-4 pb-12 dark:bg-gray-950">
         <div class="w-full max-w-xl text-center">
             <x-lottie-animation id="hero-animation" src="{{ asset('lotties/hero-animation.lottie') }}" class="size-72"/>
