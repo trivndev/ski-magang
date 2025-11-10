@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             LikedPostSeeder::class,
             BookmarkedPostSeeder::class,
             RolePermissionSeeder::class,
+            DashboardMetricSeeder::class, // create cached snapshot for dashboard
         ]);
         $threeLatestInternships = Internship::query()
             ->with(['author', 'status'])
