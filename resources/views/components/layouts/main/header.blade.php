@@ -31,18 +31,19 @@
     <flux:spacer/>
     @if ($isLoggedIn)
         <flux:dropdown position="top" align="start">
-            <flux:profile :chevron="false" avatar:name="{{ ucfirst(strtolower(Auth::user()->name)) }}"/>
+            <flux:profile :chevron="false" avatar:name="{{ ucfirst(strtolower(Auth::user()->name)) }}"
+                          avatar:color="auto"/>
             <flux:menu>
                 <flux:navlist.group class="px-3 py-1">
                     <flux:heading>{{ ucfirst(strtolower(Auth::user()->name)) }}</flux:heading>
                     <flux:text>{{ Auth::user()->email }}</flux:text>
                 </flux:navlist.group>
                 <flux:menu.separator/>
-                @role('admin|supervisor')
+                @hasanyrole('admin|supervisor')
                 <flux:navlist.item href="{{ route('admin.dashboard') }}" icon="identification" wire:navigate>
                     Admin Dashboard
                 </flux:navlist.item>
-                @endrole
+                @endhasanyrole
                 <flux:navlist.item href="{{ route('internships.create') }}"
                                    :current="request()->routeIs('internships.create')" icon="user-group" wire:navigate>
                     Posted
@@ -59,7 +60,7 @@
                 </flux:navlist.item>
                 <flux:menu.separator/>
                 <flux:navlist.item href="/settings" icon="cog-6-tooth" wire:navigate>Settings</flux:navlist.item>
-                <form method="POST" wire:submit.prevent action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
                     </flux:navlist.item>

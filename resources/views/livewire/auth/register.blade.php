@@ -3,7 +3,7 @@
         class="bg-background flex h-full gap-6 sm:border lg:w-2/3 lg:max-w-4xl lg:border-gray-200 dark:lg:border-gray-700 shadow-none dark:shadow-none mx-auto rounded-xl overflow-hidden sm:shadow-sm p-2">
         <x-auth-lottie/>
         <div class="lg:max-w-md flex sm:min-w-sm lg:min-w-0 w-full flex-col gap-4 justify-center p-8 md:p-10">
-            <h1 class="text-center font-semibold text-3xl">Welcome Back!</h1>
+            <h1 class="text-center font-semibold text-3xl">Create your account</h1>
             <div>
                 <x-auth-session-status class="text-center" :status="session('status')"/>
                 <form wire:submit="register" class="flex flex-col gap-6">
@@ -16,7 +16,6 @@
                         :placeholder="__('Full name')"
                     />
 
-                    <!-- Email Address -->
                     <flux:input
                         wire:model="email"
                         :label="__('Email address')"
@@ -25,7 +24,6 @@
                         placeholder="email@example.com"
                     />
 
-                    <!-- Password -->
                     <flux:input
                         wire:model="password"
                         :label="__('Password')"
@@ -35,7 +33,6 @@
                         viewable
                     />
 
-                    <!-- Confirm Password -->
                     <flux:input
                         wire:model="password_confirmation"
                         :label="__('Confirm password')"

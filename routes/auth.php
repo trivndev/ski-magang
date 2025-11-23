@@ -16,14 +16,14 @@ Route::middleware('guest')->group(function () {
     Route::get('reset-password/{token}', ResetPassword::class)->name('password.reset');
 });
 
+Route::get('verify-email', VerifyEmail::class)
+    ->name('verification.notice');
+
+Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
+
 Route::middleware('auth')->group(function () {
-    Route::get('verify-email', VerifyEmail::class)
-        ->name('verification.notice');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
     Route::get('confirm-password', ConfirmPassword::class)
         ->name('password.confirm');
 });

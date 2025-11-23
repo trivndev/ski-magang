@@ -26,15 +26,21 @@ class RolePermissionSeeder extends Seeder
 
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $supervisor = Role::firstOrCreate(['name' => 'supervisor']);
+        $userRole = Role::firstOrCreate(['name' => 'user']);
+
         $admin->syncPermissions([$permissions[0], $permissions[1]]);
         $supervisor->syncPermissions($permissions);
 
-        if ($adminUser = User::find(1)) {
-        $adminUser->assignRole($admin);
+        foreach (User::whereNotIn('id', [1, 2])->get() as $user) {
+            $user->assignRole($userRole);
         }
 
-        if ($supervisorUser = User::find(2)) {
+        if ($supervisorUser = User::find(1)) {
             $supervisorUser->assignRole($supervisor);
+        }
+
+        if ($adminUser = User::find(2)) {
+            $adminUser->assignRole($admin);
         }
     }
 }

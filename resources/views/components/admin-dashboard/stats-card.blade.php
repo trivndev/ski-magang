@@ -27,10 +27,10 @@
             'label' => 'text-sky-700/80 dark:text-sky-200/70',
         ],
         'neutral' => [
-            'card' => 'bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800',
-            'icon' => 'text-slate-600 dark:text-slate-300',
-            'value' => 'text-slate-800 dark:text-slate-100',
-            'label' => 'text-slate-500 dark:text-slate-400',
+            'card' => 'bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-900/40 dark:to-indigo-900/10 border-indigo-200/60 dark:border-indigo-800',
+            'icon' => 'text-indigo-600 dark:text-indigo-400',
+            'value' => 'text-indigo-700 dark:text-indigo-200',
+            'label' => 'text-indigo-700/80 dark:text-indigo-200/70',
         ],
     ];
 

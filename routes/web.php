@@ -1,6 +1,8 @@
 <?php
 
 use App\Livewire\AdminDashboard\Index as AdminIndex;
+use App\Livewire\AdminDashboard\PostsList;
+use App\Livewire\AdminDashboard\UsersList;
 use App\Livewire\Internships\BookmarkedPost;
 use App\Livewire\Internships\Create;
 use App\Livewire\Internships\LikedPost;
@@ -33,16 +35,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::middleware(['auth', 'verified', 'role:admin|supervisor'])->group(function () {
-        Route::get('/', AdminIndex::class)->name('dashboard');
-    });
-
-    Route::middleware(['auth', 'verified', 'role:supervisor'])->group(function () {
-        Route::get('/supervisor', function () {
-            return response('Supervisor only page');
-        })->name('supervisor');
-    });
+Route::middleware(['auth', 'verified', 'role:admin|supervisor'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', AdminIndex::class)->name('dashboard');
+    Route::get('/users', UsersList::class)->name('users');
+    Route::get('/posts', PostsList::class)->name('posts');
 });
 
 Route::get('dashboard', function () {

@@ -26,12 +26,20 @@ class InternshipsPostStatusSeeder extends Seeder
             'status' => "Rejected",
             'status_color' => "bg-red-500",
         ],
+        [
+            'status' => "Banned",
+            'status_color' => "bg-zinc-700",
+        ],
+        [
+            'status' => "Deleted",
+            'status_color' => "bg-gray-500",
+        ],
     ];
         foreach ($statuses as $status) {
-            InternshipsPostStatus::create([
-                'status' => $status['status'],
-                'status_color' => $status['status_color'],
-            ]);
+            InternshipsPostStatus::firstOrCreate(
+                ['status' => $status['status']],
+                ['status_color' => $status['status_color']]
+            );
         }
     }
 }
