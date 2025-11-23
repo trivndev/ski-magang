@@ -2,6 +2,8 @@
 
 use App\Livewire\Settings\Profile;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailNotification;
 use Livewire\Livewire;
 
 test('profile page is displayed', function () {
@@ -18,6 +20,7 @@ test('profile information can be updated', function () {
     $response = Livewire::test(Profile::class)
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
+        ->set('password', 'password')
         ->call('updateProfileInformation');
 
     $response->assertHasNoErrors();
@@ -27,6 +30,20 @@ test('profile information can be updated', function () {
     expect($user->name)->toEqual('Test User');
     expect($user->email)->toEqual('test@example.com');
     expect($user->email_verified_at)->toBeNull();
+});
+
+test('changing email requires current password', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $response = Livewire::test(Profile::class)
+        ->set('name', 'Another User')
+        ->set('email', 'new@example.com')
+        // intentionally do not set password
+        ->call('updateProfileInformation');
+
+    $response->assertHasErrors(['password']);
 });
 
 test('email verification status is unchanged when email address is unchanged', function () {
@@ -42,6 +59,24 @@ test('email verification status is unchanged when email address is unchanged', f
     $response->assertHasNoErrors();
 
     expect($user->refresh()->email_verified_at)->not->toBeNull();
+});
+
+test('verification email is automatically sent when changing email', function () {
+    Notification::fake();
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->set('name', 'User Name')
+        ->set('email', 'changed@example.com')
+        ->set('password', 'password')
+        ->call('updateProfileInformation')
+        ->assertHasNoErrors();
+
+    // Assert a verification notification was sent to the user
+    Notification::assertSentTo($user, VerifyEmailNotification::class);
 });
 
 test('user can delete their account', function () {

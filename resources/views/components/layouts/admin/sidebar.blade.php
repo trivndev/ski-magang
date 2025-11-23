@@ -34,11 +34,7 @@
     </flux:sidebar.nav>
     <flux:sidebar.spacer/>
     <flux:sidebar.nav>
-        <flux:modal.trigger name="settings">
-            <flux:sidebar.item icon="cog-6-tooth">Settings</flux:sidebar.item>
-        </flux:modal.trigger>
-        <flux:modal name="settings" class="max-w-[90%] w-full sm:max-w-lg outline-none">
-        </flux:modal>
+        <flux:sidebar.item href="/settings" icon="cog-6-tooth">Settings</flux:sidebar.item>
     </flux:sidebar.nav>
     <flux:dropdown position="top" align="start" class="max-lg:hidden">
         <flux:profile :chevron="false" avatar:name="{{ ucfirst(strtolower(Auth::user()->name)) }}"
@@ -66,6 +62,7 @@
                 Exit Admin
             </flux:sidebar.item>
             <flux:menu.separator/>
+            <flux:sidebar.item href="/settings" icon="cog-6-tooth">Settings</flux:sidebar.item>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
