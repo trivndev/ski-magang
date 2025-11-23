@@ -54,12 +54,12 @@
                     Posts
                 </flux:navlist.item>
                 <flux:navlist.item href="{{ route('internships.bookmarked') }}"
-                                   :current="request()->routeIs('internships.bookmarked')" icon="cog-6-tooth"
+                                   :current="request()->routeIs('internships.bookmarked')" icon="bookmark"
                                    wire:navigate>Bookmarked
                     Posts
                 </flux:navlist.item>
                 <flux:menu.separator/>
-                <flux:navlist.item href="/settings" icon="cog-6-tooth" wire:navigate>Settings</flux:navlist.item>
+                <flux:sidebar.item href="/settings" icon="cog-6-tooth">Settings</flux:sidebar.item>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
@@ -105,10 +105,7 @@
         </flux:navlist.item>
     </flux:navlist>
     <flux:spacer/>
-    <flux:navlist variant="outline">
-        <flux:navlist.item icon="cog-6-tooth" href="#" wire:navigate>Settings</flux:navlist.item>
-        <flux:navlist.item icon="information-circle" href="#">Help</flux:navlist.item>
-    </flux:navlist>
+    <flux:sidebar.item href="/settings" icon="cog-6-tooth">Settings</flux:sidebar.item>
 </flux:sidebar>
 
 <main class="flex-1">

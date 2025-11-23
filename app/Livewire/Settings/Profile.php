@@ -14,6 +14,8 @@ class Profile extends Component
 
     public string $email = '';
 
+    public string $password = '';
+
     /**
      * Mount the component.
      */
@@ -32,7 +34,6 @@ class Profile extends Component
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-
             'email' => [
                 'required',
                 'string',
@@ -43,13 +44,29 @@ class Profile extends Component
             ],
         ]);
 
+        if (strtolower($validated['email']) !== strtolower($user->email)) {
+            $this->validate([
+                'password' => ['required', 'current_password'],
+            ]);
+        }
+
         $user->fill($validated);
 
+        $emailWasChanged = false;
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
+            $emailWasChanged = true;
         }
 
         $user->save();
+
+        if ($emailWasChanged) {
+            $user->sendEmailVerificationNotification();
+            Session::flash('status', 'verification-link-sent');
+
+            $this->redirectRoute('verification.notice', navigate: true);
+            return;
+        }
 
         $this->dispatch('profile-updated', name: $user->name);
     }
