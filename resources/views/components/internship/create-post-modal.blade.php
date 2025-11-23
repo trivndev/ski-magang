@@ -6,7 +6,7 @@
             </div>
             <flux:separator/>
         </div>
-        <form class="space-y-6" wire:submit.prevent="createPost">
+        <form class="space-y-6" wire:submit.prevent="createPost" wire:ignore.self>
             <flux:fieldset class="space-y-6">
                 <flux:field>
                     <flux:input
@@ -71,12 +71,16 @@
                 </flux:field>
 
                 <flux:field>
-                    <flux:input
-                        label="Contact Phone" badge="required"
-                        placeholder="Phone number"
-                        wire:model.live.debounce.500ms="internshipForm.contact_phone"
-                        value="{{ old('contact_phone') }}"
-                    />
+                    <flux:label>Contact Phone</flux:label>
+                    <flux:input.group>
+                        <flux:input.group.prefix>+628</flux:input.group.prefix>
+                        <flux:input
+                            badge="required"
+                            placeholder="xxxxxxxxxx"
+                            wire:model.live.debounce.500ms="internshipForm.contact_phone"
+                            value="{{ old('contact_phone') }}"
+                        />
+                    </flux:input.group>
                 </flux:field>
 
                 <flux:field>

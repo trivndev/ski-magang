@@ -7,6 +7,7 @@ use App\Models\Internship;
 use App\Traits\HandlesInternshipsInteractions;
 use App\Traits\WithNotify;
 use App\Traits\WithQueryFilterAndSearch;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
@@ -62,11 +63,52 @@ class Create extends Component
     {
         if (empty($this->selected)) return;
 
-        Internship::whereIn('id', $this->selected)
-            ->where('author_id', auth()->id())
-            ->delete();
+        try {
+            $bannedId = \App\Models\InternshipsPostStatus::query()
+                ->whereRaw('LOWER(status) = ?', ['banned'])
+                ->value('id');
+            $deletedId = \App\Models\InternshipsPostStatus::query()
+                ->whereRaw('LOWER(status) = ?', ['deleted'])
+                ->value('id');
 
-        $this->selected = [];
+            $items = Internship::query()
+                ->whereIn('id', $this->selected)
+                ->where('author_id', auth()->id())
+                ->get();
+
+            $skipped = 0;
+            $deletedCount = 0;
+
+            foreach ($items as $item) {
+                if ($bannedId && (string)$item->status_id === (string)$bannedId) {
+                    $skipped++;
+                    continue;
+                }
+
+                if ($deletedId) {
+                    $item->status_id = $deletedId;
+                    $item->save();
+                }
+
+                $item->delete();
+                $deletedCount++;
+            }
+
+            $this->selected = [];
+
+            if ($deletedCount > 0) {
+                $msg = $skipped > 0
+                    ? "Deleted {$deletedCount} post(s). {$skipped} banned post(s) were skipped."
+                    : "Deleted {$deletedCount} post(s).";
+                $this->notifySuccess('Bulk Delete', $msg);
+            }
+
+            if ($deletedCount === 0 && $skipped > 0) {
+                $this->notifyError('Bulk Delete', 'All selected posts are banned and cannot be deleted.');
+            }
+        } catch (\Throwable $e) {
+            $this->notifyError('Bulk Delete Failed', $e->getMessage() ?: 'Unable to delete selected posts.');
+        }
     }
 
     public function createPost()
@@ -74,6 +116,102 @@ class Create extends Component
         $this->internshipForm->store();
 
         $this->notifySuccess('Create Post', 'Post has been created.');
+    }
+
+    public function loadForEdit(string $internshipId): void
+    {
+        $internship = Internship::query()
+            ->whereKey($internshipId)
+            ->where('author_id', auth()->id())
+            ->firstOrFail();
+
+        $this->internshipForm->job_title = $internship->job_title;
+        $this->internshipForm->company = $internship->company;
+        $this->internshipForm->location = $internship->location;
+        $this->internshipForm->job_description = $internship->job_description;
+        $this->internshipForm->requirements = $internship->requirements;
+        $this->internshipForm->benefits = (string)$internship->benefits;
+        $this->internshipForm->contact_email = (string)$internship->contact_email;
+        // Prefill phone to match UI prefix (+628). Show only the subscriber part in the input.
+        $rawPhone = (string)$internship->contact_phone;
+        $compact = str_replace([' ', '(', ')', '-', '.'], '', $rawPhone);
+        if (str_starts_with($compact, '+628')) {
+            $displayPhone = substr($compact, 4);
+        } elseif (str_starts_with($compact, '628')) {
+            $displayPhone = substr($compact, 3);
+        } elseif (str_starts_with($compact, '08')) {
+            $displayPhone = substr($compact, 2);
+        } elseif (str_starts_with($compact, '8')) {
+            $displayPhone = $compact;
+        } else {
+            $displayPhone = $rawPhone;
+        }
+        $this->internshipForm->contact_phone = $displayPhone;
+        $this->internshipForm->contact_name = $internship->contact_name;
+        // Prefill end_date in HTML <input type="date"> compatible format (Y-m-d)
+        $this->internshipForm->end_date = $internship->end_date
+            ? \Carbon\Carbon::parse($internship->end_date)->format('Y-m-d')
+            : '';
+        $this->internshipForm->vocational_major_id = $internship->vocational_major_id;
+    }
+
+    public function updatePost(string $internshipId): void
+    {
+        try {
+            $this->internshipForm->update($internshipId);
+        } catch (ValidationException $e) {
+            $errors = $e->errors();
+            $first = is_array($errors) ? collect($errors)->flatten()->first() : null;
+            $message = $first ?: 'Validation failed. Please review the highlighted fields.';
+            $this->notifyError('Update Post Failed', $message);
+            throw $e;
+        } catch (\Throwable $e) {
+            $message = $e->getMessage() ?: 'Unable to update the post due to an unexpected error.';
+            $this->notifyError('Update Post Failed', $message);
+            return;
+        }
+
+        $this->dispatch('modal-close', name: 'edit-internship-' . $internshipId);
+
+        $this->notifySuccess('Update Post', 'Post has been updated and is now pending approval.');
+    }
+
+    public function deletePost(string $internshipId): void
+    {
+        try {
+            $internship = Internship::query()
+                ->whereKey($internshipId)
+                ->where('author_id', auth()->id())
+                ->firstOrFail();
+
+            $bannedId = \App\Models\InternshipsPostStatus::query()
+                ->whereRaw('LOWER(status) = ?', ['banned'])
+                ->value('id');
+
+            if ($bannedId && (string)$internship->status_id === (string)$bannedId) {
+                $this->notifyError('Delete Post Failed', 'This post is banned and cannot be deleted.');
+                return;
+            }
+
+            $deletedId = \App\Models\InternshipsPostStatus::query()
+                ->whereRaw('LOWER(status) = ?', ['deleted'])
+                ->value('id');
+            if ($deletedId) {
+                $internship->status_id = $deletedId;
+                $internship->save();
+            }
+
+            $internship->delete();
+
+        } catch (\Throwable $e) {
+            $this->notifyError('Delete Post Failed', $e->getMessage() ?: 'Unable to delete this post.');
+            return;
+        }
+
+        $this->dispatch('modal-close', name: 'delete-internship-' . $internshipId);
+        $this->dispatch('modal-close', name: 'internship-' . $internshipId);
+
+        $this->notifySuccess('Delete Post', 'Post has been deleted.');
     }
 
     public function render()
@@ -88,6 +226,7 @@ class Create extends Component
         $selectedStatus = $this->selectedStatus;
 
         $query = Internship::query()
+            ->withTrashed()
             ->with(['author', 'status'])
             ->withCount('likes')
             ->withExists([

@@ -95,6 +95,12 @@
                         <flux:icon.phone variant="solid" class="text-green-500"/>
                         <flux:text>{{ "$internship->contact_phone ($internship->contact_name)" }}</flux:text>
                     </div>
+                    @if($internship->contact_email)
+                        <div class="flex items-center space-x-2 place-items-center">
+                            <flux:icon.envelope variant="solid" class="text-shadow-slate-400"/>
+                            <flux:text>{{ "$internship->contact_email" }}</flux:text>
+                        </div>
+                    @endif
                     <div class="flex items-center space-x-2 place-items-center">
                         <flux:icon.heart variant="solid" class="text-red-500"/>
                         <flux:text>{{ $internship->likes_count }} People like this post</flux:text>
@@ -140,6 +146,21 @@
                         <flux:button icon="share" color="zinc" variant="primary" icon:variant="outline"/>
                     </flux:tooltip>
                 </flux:modal.trigger>
+                @if($isCreateRoute)
+                    <flux:modal.trigger name="edit-internship-{{ $internship->id }}">
+                        <flux:tooltip content="Edit this post">
+                            <flux:button icon="pencil-square" variant="primary" color="blue" icon:variant="outline"
+                                         wire:click="loadForEdit('{{ $internship->getKey() }}')"/>
+                        </flux:tooltip>
+                    </flux:modal.trigger>
+                    @if(strtolower($statusLabel) !== "deleted")
+                        <flux:modal.trigger name="delete-internship-{{ $internship->id }}">
+                            <flux:tooltip content="Delete this post">
+                                <flux:button icon="trash" variant="primary" color="red" icon:variant="outline"/>
+                            </flux:tooltip>
+                        </flux:modal.trigger>
+                    @endif
+                @endif
             </div>
             <div class="space-y-2 [&_div]:space-y-1">
                 <div>
@@ -165,6 +186,141 @@
             </div>
         </div>
     </flux:modal>
+    @if($isCreateRoute)
+        <flux:modal class="max-w-[90%] w-full sm:max-w-2xl outline-none" name="edit-internship-{{ $internship->id }}"
+                    :dismissible="true" wire:ignore.self>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <flux:heading class="text-xl">Edit Internship</flux:heading>
+                </div>
+                <flux:separator/>
+                <form class="space-y-4" wire:submit.prevent="updatePost('{{ $internship->getKey() }}')">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <flux:field>
+                                <flux:label>Job Title</flux:label>
+                                <flux:input wire:model.defer="internshipForm.job_title" placeholder="Job title"/>
+                                @error('internshipForm.job_title') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div>
+                            <flux:field>
+                                <flux:label>Company</flux:label>
+                                <flux:input wire:model.defer="internshipForm.company" placeholder="Company"/>
+                                @error('internshipForm.company') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div>
+                            <flux:field>
+                                <flux:label>Location</flux:label>
+                                <flux:input wire:model.defer="internshipForm.location" placeholder="Location"/>
+                                @error('internshipForm.location') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div>
+                            <flux:field>
+                                <flux:label>Close Date</flux:label>
+                                <flux:input type="date" wire:model.defer="internshipForm.end_date"/>
+                                @error('internshipForm.end_date') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <flux:field>
+                                <flux:label>Job Description</flux:label>
+                                <flux:textarea rows="3" wire:model.defer="internshipForm.job_description"/>
+                                @error('internshipForm.job_description') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div class="md:col-span-2">
+                            <flux:field>
+                                <flux:label>Requirements</flux:label>
+                                <flux:textarea rows="3" wire:model.defer="internshipForm.requirements"/>
+                                @error('internshipForm.requirements') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div class="md:col-span-2">
+                            <flux:field>
+                                <flux:label>Benefits</flux:label>
+                                <flux:textarea rows="2" wire:model.defer="internshipForm.benefits"/>
+                                @error('internshipForm.benefits') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <flux:field>
+                                <flux:label>Contact Name</flux:label>
+                                <flux:input wire:model.defer="internshipForm.contact_name"/>
+                                @error('internshipForm.contact_name') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div>
+                            <flux:field>
+                                <flux:label>Contact Phone</flux:label>
+                                <flux:input.group>
+                                    <flux:input.group.prefix>+628</flux:input.group.prefix>
+                                    <flux:input wire:model.defer="internshipForm.contact_phone"
+                                                placeholder="xxxxxxxxxx"/>
+                                </flux:input.group>
+                                @error('internshipForm.contact_phone') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div class="md:col-span-2">
+                            <flux:field>
+                                <flux:label>Contact Email</flux:label>
+                                <flux:input type="email" wire:model.defer="internshipForm.contact_email"/>
+                                @error('internshipForm.contact_email') <p
+                                    class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end gap-2">
+                        <flux:modal.close>
+                            <flux:button variant="ghost">Cancel</flux:button>
+                        </flux:modal.close>
+                        <flux:button type="submit" variant="primary" icon="check" wire:loading.attr="disabled"
+                                     wire:target="updatePost">Save
+                        </flux:button>
+                    </div>
+                </form>
+            </div>
+        </flux:modal>
+        <flux:modal class="max-w-[90%] w-full sm:max-w-md outline-none" name="delete-internship-{{ $internship->id }}"
+                    :dismissible="true" wire:ignore.self>
+            <div class="space-y-4">
+                <div>
+                    <flux:heading class="text-xl">Delete Post</flux:heading>
+                </div>
+                <flux:separator/>
+                <div class="space-y-2">
+                    <p>Are you sure you want to delete this post?</p>
+                    <p class="text-sm text-zinc-600 dark:text-zinc-400">This action will remove the post from your
+                        listings. You can no longer edit it afterwards.</p>
+                </div>
+                <div class="flex items-center justify-end gap-2">
+                    <flux:modal.close>
+                        <flux:button variant="ghost">Cancel</flux:button>
+                    </flux:modal.close>
+                    <flux:button color="red" variant="primary" icon="trash"
+                                 wire:click="deletePost('{{ $internship->getKey() }}')"
+                                 wire:loading.attr="disabled" wire:target="deletePost">
+                        Delete
+                    </flux:button>
+                </div>
+            </div>
+        </flux:modal>
+    @endif
     <flux:modal class="max-w-[90%] w-full sm:max-w-lg outline-none" name="share-internship-{{ $internship->id }}">
         <div class="space-y-3">
             <div>
