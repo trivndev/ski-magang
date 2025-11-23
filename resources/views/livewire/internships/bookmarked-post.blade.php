@@ -18,7 +18,7 @@
     </script>
 @endpush
 <div class="space-x-12 space-y-8 mx-auto max-w-7xl py-8 px-8 md:py-16">
-    <div class="space-y-4 w-full">
+    <div class="space-y-4 w-full" wire:ignore.self>
         <flux:heading class="text-xl">
             Bookmarked Posts
         </flux:heading>

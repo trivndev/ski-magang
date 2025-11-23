@@ -3,6 +3,7 @@
 namespace App\Livewire\Settings;
 
 use App\Livewire\Actions\Logout;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -19,7 +20,11 @@ class DeleteUserForm extends Component
             'password' => ['required', 'string', 'current_password'],
         ]);
 
-        tap(Auth::user(), $logout(...))->delete();
+        /** @var User $user */
+        $user = Auth::user();
+
+        // Hapus akun secara permanen (hard delete) dan logout dari sesi saat ini
+        tap($user, $logout(...))->forceDelete();
 
         $this->redirect('/', navigate: true);
     }

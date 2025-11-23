@@ -1,2 +1,3 @@
 User-agent: *
-Disallow:/lotties/*
+Disallow: /lotties/*
+Disallow: /admin

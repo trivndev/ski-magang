@@ -30,7 +30,7 @@
                                     :isCreatePage="true"/>
     </div>
     <div data-aos="fade-up" data-aos-duration="500" data-aos-once="true" data-aos-anchor-placement="top-bottom"
-         class="space-y-8">
+         class="space-y-8" wire:ignore.self>
         <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-8">
             @foreach($internships as $internship)
                 <div class="relative" x-data>

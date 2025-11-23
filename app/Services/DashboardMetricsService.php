@@ -35,7 +35,8 @@ class DashboardMetricsService
         $rejectedCount = $rejectedId ? Internship::query()->where('status_id', $rejectedId)->count() : 0;
         $pendingCount  = $pendingId  ? Internship::query()->where('status_id', $pendingId)->count()  : 0;
 
-        $deletedPosts = Internship::onlyTrashed()->count();
+        // Soft delete support: hitung jumlah postingan yang dihapus lembut
+        $deletedPosts = Internship::query()->onlyTrashed()->count();
 
         $start = $now->copy()->startOfMonth()->subMonths(11);
         $end = $now->copy()->endOfMonth();
@@ -84,19 +85,41 @@ class DashboardMetricsService
 
         $activeUsers = count(collect($recentUserIds)->merge($recentAuthors)->unique());
 
-        // Top 10 most-liked posts (cached as lightweight array)
         $topLiked = Internship::query()
             ->withCount('likes')
-            ->with(['author:id,name', 'vocationalMajor:id,major_name'])
+            ->with(['author:id,name', 'vocationalMajor:id,major_name', 'status:id,status'])
             ->orderByDesc('likes_count')
             ->orderByDesc('created_at')
             ->limit(10)
-            ->get(['id','job_title','company','author_id','vocational_major_id','created_at'])
+            ->get([
+                'id',
+                'job_title',
+                'company',
+                'location',
+                'job_description',
+                'requirements',
+                'benefits',
+                'contact_phone',
+                'contact_name',
+                'end_date',
+                'status_id',
+                'author_id',
+                'vocational_major_id',
+                'created_at',
+            ])
             ->map(function ($p) {
                 return [
                     'id' => (string) $p->id,
                     'title' => $p->job_title,
                     'company' => $p->company,
+                    'address' => $p->location,
+                    'job_description' => $p->job_description,
+                    'requirements' => $p->requirements,
+                    'benefits' => $p->benefits,
+                    'contact_phone' => $p->contact_phone,
+                    'contact_name' => $p->contact_name,
+                    'end_date' => optional($p->end_date)->toDateString(),
+                    'status' => optional($p->status)->status,
                     'likes' => (int) ($p->likes_count ?? 0),
                     'author' => optional($p->author)->name,
                     'major_name' => optional($p->vocationalMajor)->major_name,

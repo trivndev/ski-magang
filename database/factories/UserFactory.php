@@ -25,7 +25,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        // Spread users over the last 12 months so the monthly chart shows differences
         $created = fake()->dateTimeBetween('-11 months', 'now');
         $updated = fake()->dateTimeBetween($created, 'now');
         $verified = fake()->boolean(85) ? fake()->dateTimeBetween($created, 'now') : null;
@@ -46,13 +45,13 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
 
     public function internships(): HasMany
     {
-        return $this->hasMany(Internship::class,'author_id');
+        return $this->hasMany(Internship::class, 'author_id');
     }
 }

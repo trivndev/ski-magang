@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-#[Layout('components.layouts.auth')]
+#[Layout('components.layouts.auth.html')]
 class VerifyEmail extends Component
 {
     /**
@@ -16,13 +16,19 @@ class VerifyEmail extends Component
      */
     public function sendVerification(): void
     {
-        if (Auth::user()->hasVerifiedEmail()) {
-            $this->redirectIntended(default: route('home', absolute: false), navigate: true);
-
+        if (!Auth::check()) {
+            Session::flash('status', __('Please log in to request a verification link.'));
+            $this->redirectRoute('login', navigate: true);
             return;
         }
 
-        Auth::user()->sendEmailVerificationNotification();
+        $user = Auth::user();
+        if ($user->hasVerifiedEmail()) {
+            $this->redirectIntended(default: route('home', absolute: false), navigate: true);
+            return;
+        }
+
+        $user->sendEmailVerificationNotification();
 
         Session::flash('status', 'verification-link-sent');
     }

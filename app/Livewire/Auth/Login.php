@@ -33,7 +33,7 @@ class Login extends Component
 
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+        if (!Auth::validate(['email' => $this->email, 'password' => $this->password])) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -42,9 +42,21 @@ class Login extends Component
         }
 
         RateLimiter::clear($this->throttleKey());
-        Session::regenerate();
 
-        $user = Auth::user();
+        $user = \App\Models\User::where('email', $this->email)->first();
+        if ($user && !is_null($user->banned_at)) {
+            throw ValidationException::withMessages([
+                'email' => 'Your account has been banned. Please contact support.',
+            ]);
+        }
+
+        if ($user && ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail) && !$user->hasVerifiedEmail()) {
+            $this->redirect(route('verification.notice', absolute: false), navigate: true);
+            return;
+        }
+
+        Auth::login($user, $this->remember);
+        Session::regenerate();
         $default = $this->resolveHomeFor($user);
         $this->redirectIntended(default: $default, navigate: true);
     }
@@ -52,14 +64,14 @@ class Login extends Component
     protected function resolveHomeFor($user): string
     {
         if (!$user) {
-            return route('dashboard', absolute: false);
+            return route('home', absolute: false);
         }
 
         if ($user->hasRole(['admin', 'supervisor'])) {
             return route('admin.dashboard', absolute: false);
         }
 
-        return route('dashboard', absolute: false);
+        return route('home', absolute: false);
     }
 
     /**

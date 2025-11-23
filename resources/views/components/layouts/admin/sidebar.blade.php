@@ -22,13 +22,13 @@
             class="in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2 opacity-100!"/>
     </flux:sidebar.header>
     <flux:sidebar.nav>
-        <flux:sidebar.item href="{{ route('admin.dashboard') }}">
+        <flux:sidebar.item icon="chart-bar-square" href="{{ route('admin.dashboard') }}" wire:navigate>
             Dashboard
         </flux:sidebar.item>
-        <flux:sidebar.item href="">
+        <flux:sidebar.item href="" icon="user-group" href="{{ route('admin.users') }}" wire:navigate>
             Users List
         </flux:sidebar.item>
-        <flux:sidebar.item>
+        <flux:sidebar.item icon="arrow-up-on-square-stack" href="{{ route('admin.posts') }}" wire:navigate>
             Posts List
         </flux:sidebar.item>
     </flux:sidebar.nav>
@@ -42,14 +42,16 @@
     </flux:sidebar.nav>
     <flux:dropdown position="top" align="start" class="max-lg:hidden">
         <flux:profile :chevron="false" avatar:name="{{ ucfirst(strtolower(Auth::user()->name)) }}"
-                      name="{{Auth::user()->name}}"/>
+                      name="{{Auth::user()->name}}" avatar:color="auto"/>
         <flux:menu>
-            <flux:menu.radio.group>
-                <flux:menu.radio checked>Olivia Martin</flux:menu.radio>
-                <flux:menu.radio>Truly Delta</flux:menu.radio>
-            </flux:menu.radio.group>
+            <flux:sidebar.item icon="arrow-left-start-on-rectangle" href="{{ route('home') }}">
+                Exit Admin
+            </flux:sidebar.item>
             <flux:menu.separator/>
-            <flux:menu.item icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <flux:menu.item type="submit" icon="arrow-right-start-on-rectangle">Logout</flux:menu.item>
+            </form>
         </flux:menu>
     </flux:dropdown>
 </flux:sidebar>
@@ -58,13 +60,13 @@
     <flux:spacer/>
     <flux:dropdown position="top" align="start">
         <flux:profile :chevron="false" avatar:name="{{ ucfirst(strtolower(Auth::user()->name)) }}"
-                      name="{{Auth::user()->name}}"/>
+                      name="{{Auth::user()->name}}" avatar:color="auto"/>
         <flux:menu>
-            <flux:sidebar.item icon="arrow-left-start-on-rectangle">
+            <flux:sidebar.item icon="arrow-left-start-on-rectangle" href="{{ route('home') }}">
                 Exit Admin
             </flux:sidebar.item>
             <flux:menu.separator/>
-            <form method="POST" wire:submit.prevent action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <flux:navlist.item type="submit" icon="arrow-right-start-on-rectangle">Logout
                 </flux:navlist.item>
