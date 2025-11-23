@@ -12,6 +12,7 @@
                         <div class="flex items-center justify-between">
                             <div>
                                 @php($statusLabel = optional($internship->status)->status)
+                                @php($isInactive = in_array(strtolower($statusLabel ?? ''), ['deleted','banned']))
                                 @switch($statusLabel)
                                     @case('Pending')
                                         <flux:badge color="zinc">Pending</flux:badge>
@@ -141,25 +142,18 @@
                                      wire:loading.class="pointer-events-none animate-pulse" wire:target="toggleLike"/>
                     </flux:tooltip>
                 @endif
-                <flux:modal.trigger name="share-internship-{{ $internship->id }}">
-                    <flux:tooltip content="Share this post">
-                        <flux:button icon="share" color="zinc" variant="primary" icon:variant="outline"/>
-                    </flux:tooltip>
-                </flux:modal.trigger>
-                @if($isCreateRoute)
+                @if($isCreateRoute && !$isInactive)
                     <flux:modal.trigger name="edit-internship-{{ $internship->id }}">
                         <flux:tooltip content="Edit this post">
                             <flux:button icon="pencil-square" variant="primary" color="blue" icon:variant="outline"
                                          wire:click="loadForEdit('{{ $internship->getKey() }}')"/>
                         </flux:tooltip>
                     </flux:modal.trigger>
-                    @if(strtolower($statusLabel) !== "deleted")
-                        <flux:modal.trigger name="delete-internship-{{ $internship->id }}">
-                            <flux:tooltip content="Delete this post">
-                                <flux:button icon="trash" variant="primary" color="red" icon:variant="outline"/>
-                            </flux:tooltip>
-                        </flux:modal.trigger>
-                    @endif
+                    <flux:modal.trigger name="delete-internship-{{ $internship->id }}">
+                        <flux:tooltip content="Delete this post">
+                            <flux:button icon="trash" variant="primary" color="red" icon:variant="outline"/>
+                        </flux:tooltip>
+                    </flux:modal.trigger>
                 @endif
             </div>
             <div class="space-y-2 [&_div]:space-y-1">
@@ -186,7 +180,7 @@
             </div>
         </div>
     </flux:modal>
-    @if($isCreateRoute)
+    @if($isCreateRoute && !$isInactive)
         <flux:modal class="max-w-[90%] w-full sm:max-w-2xl outline-none" name="edit-internship-{{ $internship->id }}"
                     :dismissible="true" wire:ignore.self>
             <div class="space-y-4">
@@ -321,19 +315,4 @@
             </div>
         </flux:modal>
     @endif
-    <flux:modal class="max-w-[90%] w-full sm:max-w-lg outline-none" name="share-internship-{{ $internship->id }}">
-        <div class="space-y-3">
-            <div>
-                <flux:heading class="text-xl">Internship Details</flux:heading>
-            </div>
-            <flux:separator/>
-            <div>
-                <flux:heading size="lg">
-                    Share this post
-                </flux:heading>
-                <flux:input copyable="true" readonly="true"
-                            value="{{ route('internships.index' ,$internship->getKey()) }}"/>
-            </div>
-        </div>
-    </flux:modal>
 </div>
