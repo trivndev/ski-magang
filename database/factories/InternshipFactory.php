@@ -27,7 +27,7 @@ class InternshipFactory extends Factory
             'requirements' => fake()->paragraph(7),
             'benefits' => fake()->paragraph(4),
             'contact_email' => fake()->email(),
-            'contact_phone' => fake()->phoneNumber(),
+            'contact_phone' => '+628' . fake()->numerify('##########'),
             'contact_name' => fake()->name(),
             'vocational_major_id' => VocationalMajor::factory(),
             'author_id' => User::factory(),
