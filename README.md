@@ -11,6 +11,7 @@ SKI MAGANG is a website for students of SMK Kristen Immanuel Pontianak to share 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Architecture & Tech Stack](#architecture--tech-stack)
+- [Deployment (Railway)](#deployment-railway)
 - [Contributors](#contributors)
 - [License](#license)
 
@@ -183,3 +184,25 @@ php artisan migrate --seed
 This project is licensed under the Polyform Noncommercial License 1.0.0.
 You may use, modify, and share it for noncommercial purposes only.
 See [LICENSE](./LICENSE) for full text.
+
+---
+
+## Deployment (Railway)
+
+This project includes a Dockerfile optimized for Railway using FrankenPHP (Octane).
+
+Steps:
+- Create a new Railway project and select “Deploy from Repository”.
+- Ensure Railway uses the Dockerfile at the repository root.
+- Configure environment variables:
+  - APP_ENV=production
+  - APP_DEBUG=false
+  - APP_KEY=base64:... (required)
+  - DB_CONNECTION, DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD (as needed)
+  - PORT will be provided by Railway automatically
+- On first deploy, run migrations (from the Railway shell):
+  - php artisan migrate --force
+
+Notes:
+- Static assets are built during the Docker build stage with Vite and copied to public/build.
+- The server listens on 0.0.0.0:$PORT using Laravel Octane with FrankenPHP.
