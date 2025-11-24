@@ -9,9 +9,6 @@ use Spatie\Permission\Models\Role;
 
 class RolePermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $permissions = [
@@ -31,16 +28,21 @@ class RolePermissionSeeder extends Seeder
         $admin->syncPermissions([$permissions[0], $permissions[1]]);
         $supervisor->syncPermissions($permissions);
 
-        foreach (User::whereNotIn('id', [1, 2])->get() as $user) {
-            $user->assignRole($userRole);
+        $adminUser = User::where('email', 'admin@example.com')->first();
+        if ($adminUser) {
+            $adminUser->syncRoles([$admin]);
         }
 
-        if ($supervisorUser = User::find(1)) {
-            $supervisorUser->assignRole($supervisor);
+        $supervisorUser = User::where('email', 'nicolas100107@gmail.com')->first();
+        if ($supervisorUser) {
+            $supervisorUser->syncRoles([$supervisor]);
         }
 
-        if ($adminUser = User::find(2)) {
-            $adminUser->assignRole($admin);
+        $defaultUsers = User::whereNotIn('email', ['admin@example.com', 'nicolas100107@gmail.com'])->get();
+        foreach ($defaultUsers as $user) {
+            if ($user->roles()->count() === 0) {
+                $user->assignRole($userRole);
+            }
         }
     }
 }
