@@ -30,12 +30,12 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 # Build frontend assets if package.json exists
 RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
 
-# Cache Laravel
+# Laravel cache
 RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Expose port 80
+# Expose Apache port
 EXPOSE 80
 
 # Start Apache
