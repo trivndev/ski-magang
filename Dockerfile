@@ -1,33 +1,44 @@
+# -----------------------------
+# Stage 1 - Build Frontend (Vite)
+# -----------------------------
 FROM node:20 AS frontend
 
 WORKDIR /app
 
-# Install PHP & Composer minimal untuk dependency
-RUN apt-get update && apt-get install -y git curl unzip php-cli libzip-dev zip \
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install build tools & library native untuk Vite
+RUN apt-get update && apt-get install -y \
+    git curl unzip php-cli libzip-dev zip python3 g++ make libpng-dev libjpeg-dev libfreetype6-dev \
+    && rm -rf /var/lib/apt/lists/*
 
+# Copy composer files & install PHP dependencies dulu
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
+RUN php -d memory_limit=-1 $(which composer) install --no-dev --optimize-autoloader
 
+# Copy package.json & install Node dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy seluruh source code
 COPY . .
 
+# Set env vars Vite (Render akan inject via ARG)
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
+# Build frontend
 RUN npm run build
 
 # -----------------------------
 # Stage 2 - Backend (Laravel + PHP)
 # -----------------------------
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
-# Install PHP dependencies & PostgreSQL driver
+# Install PHP extensions & PostgreSQL driver
 RUN apt-get update && apt-get install -y \
     git curl unzip libpq-dev libonig-dev libzip-dev zip \
-    && docker-php-ext-install pdo pdo_pgsql mbstring zip \
+    libpng-dev libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_pgsql mbstring zip gd \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -41,8 +52,8 @@ COPY . .
 # Copy hasil build frontend
 COPY --from=frontend /app/dist ./public/dist
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies (redundant, tapi aman)
+RUN php -d memory_limit=-1 /usr/bin/composer install --no-dev --optimize-autoloader
 
 # Clear Laravel caches
 RUN php artisan config:clear \
