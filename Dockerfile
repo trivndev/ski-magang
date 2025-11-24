@@ -33,10 +33,11 @@ RUN npm run build
 # -----------------------------
 FROM php:8.4-fpm
 
-# Install PHP extensions & PostgreSQL driver
+# Install system deps & PHP extensions
 RUN apt-get update && apt-get install -y \
     git curl unzip libpq-dev libonig-dev libzip-dev zip \
     libpng-dev libjpeg-dev libfreetype6-dev \
+    nodejs npm python3 g++ make \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_pgsql mbstring zip gd \
     && rm -rf /var/lib/apt/lists/*
@@ -46,22 +47,31 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy Laravel app files
+# Copy composer files & install dependencies
+COPY composer.json composer.lock ./
+RUN php -d memory_limit=-1 /usr/bin/composer install --no-dev --optimize-autoloader
+
+# Copy package.json & install Node dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy full source code
 COPY . .
 
-# Copy hasil build frontend
-COPY --from=frontend /app/dist ./public/dist
+# Set Vite env
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 
-# Install PHP dependencies (redundant, tapi aman)
-RUN php -d memory_limit=-1 /usr/bin/composer install --no-dev --optimize-autoloader
+# Build frontend
+RUN npm run build
 
 # Clear Laravel caches
 RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan view:clear
 
-# Expose port untuk Render
+# Expose port Render
 EXPOSE 8080
 
-# Start PHP-FPM di foreground
+# Start PHP-FPM
 CMD ["php-fpm", "-F"]
