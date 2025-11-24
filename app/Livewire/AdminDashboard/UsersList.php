@@ -16,6 +16,7 @@ class UsersList extends Component
 {
     use WithPagination, WithNotify;
 
+    // Filter/search state (drafts are edited in the modal before applying)
     public string $draftSearchQuery = '';
     public string $searchQuery = '';
 
