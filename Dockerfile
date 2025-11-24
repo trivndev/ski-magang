@@ -1,3 +1,4 @@
+# Base image FrankenPHP
 FROM dunglas/frankenphp:latest
 
 WORKDIR /app
@@ -19,28 +20,29 @@ RUN apt-get update && apt-get install -y \
 # Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy entire app
+# Copy application code
 COPY . .
 
-# 🔥 FIX: siapkan folder storage & cache sebelum composer install
+# 🔥 Prepare folders & permissions
 RUN mkdir -p storage/framework/cache \
  && mkdir -p storage/framework/views \
  && mkdir -p storage/framework/sessions \
- && mkdir -p bootstrap/cache
+ && mkdir -p bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache
 
 # Install PHP dependencies
-RUN composer require laravel/octane:^2.4 --update-with-all-dependencies
-
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Build assets
-RUN npm ci --no-audit --no-fund && npm run build
+# Build frontend assets if package.json exists
+RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
 
-# Laravel cache
+# Cache Laravel config, routes, views
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
+# Expose default Railway port
 EXPOSE 8000
 
-CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8000"]
+# Start Octane using PORT environment variable
+CMD ["sh", "-c", "php artisan octane:start --server=frankenphp --host=0.0.0.0 --port=${PORT}"]
