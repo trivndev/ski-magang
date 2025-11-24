@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Set Apache DocumentRoot ke public & ganti port 8080 untuk Railway
+# Apache: DocumentRoot ke public & port 8080
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
     && sed -i 's/80/8080/' /etc/apache2/ports.conf \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
@@ -21,17 +21,13 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy project files
 COPY . .
 
-# 🔹 Prepare folders & permissions BEFORE composer install
+# 🔹 Prepare folders & permissions
 RUN mkdir -p storage/framework/{cache,views,sessions} bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# 🔹 Install PHP dependencies AS www-data
-USER www-data
+# 🔹 Install PHP dependencies (composer) AS ROOT
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Kembali ke root untuk build frontend dan perintah lain
-USER root
 
 # 🔹 Build frontend assets if package.json exists
 RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
@@ -44,8 +40,10 @@ RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
 
-# Expose Apache port
-EXPOSE 8080
+# Set owner ke www-data agar runtime aman
+RUN chown -R www-data:www-data storage bootstrap/cache vendor
 
-# Start Apache
+# Expose Apache port Railway
+EXPOSE 80
+
 CMD ["apache2-foreground"]
