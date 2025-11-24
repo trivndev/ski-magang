@@ -33,8 +33,7 @@ RUN install-php-extensions \
 COPY --chown=www-data:www-data . /app
 COPY --from=composer /app/vendor /app/vendor
 COPY --from=assets /app/public/build /app/public/build
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader \
- && mkdir -p /app/storage/logs \
+RUN mkdir -p /app/storage/logs \
  && mkdir -p /app/storage/framework/cache \
  && mkdir -p /app/storage/framework/sessions \
  && mkdir -p /app/storage/framework/views \
