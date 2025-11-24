@@ -1,42 +1,51 @@
-# Base PHP + Apache
+# Base image PHP + Apache
 FROM php:8.2-apache
 
 WORKDIR /var/www/html
 
-# System deps
-RUN apt-get update && apt-get install -y git curl zip unzip npm libicu-dev libzip-dev libonig-dev libpq-dev \
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip npm libicu-dev libzip-dev libonig-dev libpq-dev \
     && docker-php-ext-install intl zip pdo_mysql bcmath pdo_pgsql \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
-# Apache port 8080 & DocumentRoot
-RUN sed -i 's/80/8080/' /etc/apache2/ports.conf \
-    && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+# Set Apache DocumentRoot ke public & ganti port 8080 untuk Railway
+RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+    && sed -i 's/80/8080/' /etc/apache2/ports.conf \
     && echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-# Composer
+# Copy composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy project
+# Copy project files
 COPY . .
 
-# Permissions
+# 🔹 Prepare folders & permissions BEFORE composer install
 RUN mkdir -p storage/framework/{cache,views,sessions} bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# PHP deps
+# 🔹 Install PHP dependencies AS www-data
+USER www-data
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Optional: build assets
+# Kembali ke root untuk build frontend dan perintah lain
+USER root
+
+# 🔹 Build frontend assets if package.json exists
 RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
 
-# Laravel setup
-RUN php artisan key:generate --ansi || true \
-    && php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# 🔹 Generate APP_KEY jika belum ada
+RUN php artisan key:generate --ansi || true
 
-EXPOSE 80
+# 🔹 Laravel cache
+RUN php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache
 
+# Expose Apache port
+EXPOSE 8080
+
+# Start Apache
 CMD ["apache2-foreground"]
