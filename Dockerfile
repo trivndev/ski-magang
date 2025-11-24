@@ -1,49 +1,57 @@
-# Base image PHP + Apache
-FROM php:8.2-apache
+# ------------------------------
+# Stage 1 - Build Frontend (Vite)
+# ------------------------------
+FROM node:18 AS frontend
+WORKDIR /app
 
-WORKDIR /var/www/html
+# Copy package files & install deps
+COPY package*.json ./
+RUN npm ci --no-audit --no-fund
+
+# Copy all source & build
+COPY . .
+RUN npm run build
+
+# ------------------------------
+# Stage 2 - Backend (Laravel + PHP + Composer)
+# ------------------------------
+FROM php:8.2-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git curl zip unzip npm libicu-dev libzip-dev libonig-dev libpq-dev \
-    && docker-php-ext-install intl zip pdo_mysql bcmath pdo_pgsql \
-    && a2enmod rewrite \
-    && rm -rf /var/lib/apt/lists/*
+    git curl unzip libpq-dev libonig-dev libzip-dev zip \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip
 
-# Apache: DocumentRoot ke public & port 8080
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's/80/8080/' /etc/apache2/ports.conf \
-    && echo "ServerName localhost" >> /etc/apache2/apache2.conf
-
-# Copy composer binary
+# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy project files
+WORKDIR /var/www/html
+
+# Copy Laravel app
 COPY . .
 
-# 🔹 Prepare folders & permissions
+# Copy built frontend assets
+COPY --from=frontend /app/public/dist ./public/dist
+
+# Prepare storage & bootstrap/cache
 RUN mkdir -p storage/framework/{cache,views,sessions} bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# 🔹 Install PHP dependencies (composer) AS ROOT
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Install PHP dependencies & discover packages
+RUN composer install --no-dev --optimize-autoloader --no-interaction \
+    && php artisan package:discover --ansi
 
-# 🔹 Build frontend assets if package.json exists
-RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
-
-# 🔹 Generate APP_KEY jika belum ada
-RUN php artisan key:generate --ansi || true
-
-# 🔹 Laravel cache
+# Laravel cache
 RUN php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:cache
+    && php artisan route:cache \
+    && php artisan view:cache
 
-# Set owner ke www-data agar runtime aman
+# Set owner to www-data
 RUN chown -R www-data:www-data storage bootstrap/cache vendor
 
-# Expose Apache port Railway
-EXPOSE 80
+# Expose port for FrankenPHP / Octane
+EXPOSE 8080
 
-CMD ["apache2-foreground"]
+# Start Laravel Octane with FrankenPHP
+CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8080", "--workers=4"]
