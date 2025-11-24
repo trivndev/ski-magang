@@ -32,4 +32,11 @@ RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; f
 
 # Cache Laravel
 RUN php artisan config:cache \
- && php artisan rout
+ && php artisan route:cache \
+ && php artisan view:cache
+
+# Expose port 80
+EXPOSE 80
+
+# Start Apache
+CMD ["apache2-foreground"]
