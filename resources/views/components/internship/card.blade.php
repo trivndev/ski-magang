@@ -2,7 +2,7 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div wire:key="internship-card-{{ $internship->id }}" wire:poll.60s>
+<div wire:key="internship-card-{{ $internship->id }}" wire:poll.3s>
     <flux:modal.trigger name="internship-{{ $internship->id }}" wire:key="trigger-{{ $internship->id }}">
         <div
             class="p-6 block rounded-lg shadow outline outline-gray-100 dark:outline-gray-500 hover:outline-blue-500 transition-colors duration-300 cursor-pointer dark:shadow-none overflow-hidden bg-white/30 backdrop-blur-md dark:bg-gray-900/30 h-full">
