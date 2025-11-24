@@ -8,7 +8,7 @@ storage/logs
 .gitignore
 .env
 docker-compose.yml
-DockerFile
+Dockerfile*
 *.md
 tests
 phpunit.xml
