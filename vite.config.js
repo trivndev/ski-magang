@@ -7,11 +7,14 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js','resources/js/lottie.js'],
+            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/lottie.js'],
             refresh: true,
         }),
         tailwindcss(),
     ],
+    build: {
+        outDir: 'public/dist'
+    },
     server: {
         cors: true,
     },
