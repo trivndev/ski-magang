@@ -29,6 +29,8 @@ RUN mkdir -p storage/framework/cache \
  && mkdir -p bootstrap/cache
 
 # Install PHP dependencies
+RUN composer require laravel/octane:^2.4 --update-with-all-dependencies
+
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Build assets
