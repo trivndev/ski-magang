@@ -1,5 +1,5 @@
 # Stage 1 - Build Frontend (Vite)
-FROM node:18 AS frontend
+FROM node:20 AS frontend
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
