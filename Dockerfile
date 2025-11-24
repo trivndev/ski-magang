@@ -20,8 +20,6 @@ RUN install-php-extensions \
     exif \
     pcntl \
     pdo_mysql \
-    pgsql \
-    pdo_pgsql \
     bcmath \
     intl \
     opcache
