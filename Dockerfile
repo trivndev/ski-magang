@@ -1,41 +1,28 @@
-FROM composer:2 AS composer
-WORKDIR /app
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-interaction --prefer-dist
+FROM dunglas/frankenphp:latest
 
-FROM node:20-alpine AS assets
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --no-audit --no-fund
-COPY resources ./resources
-COPY vite.config.js .
-COPY tailwind.config.* ./
-COPY postcss.config.* ./
-COPY --from=composer /app/vendor /app/vendor
-RUN npm run build
-
-FROM php:8.3-cli
-
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libpq-dev \
-    unzip \
+RUN apk add --no-cache \
     git \
-    && docker-php-ext-install intl pdo_mysql pdo_pgsql bcmath \
-    && docker-php-ext-enable pcntl
+    curl \
+    zip \
+    unzip \
+    oniguruma-dev \
+    autoconf \
+    build-base \
+    npm
 
 WORKDIR /app
 
-COPY . /app
-COPY --from=composer /app/vendor /app/vendor
-COPY --from=assets /app/public/build /app/public/build
+COPY . .
 
-RUN php artisan storage:link || true
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+RUN npm ci --no-audit --no-fund && npm run build
+
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
-ENV PORT=8000
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8000"]
+CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8080"]
