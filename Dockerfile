@@ -1,27 +1,22 @@
-# -----------------------------
-# Stage 1 - Build Frontend (Vite)
-# -----------------------------
 FROM node:20 AS frontend
 
 WORKDIR /app
 
-# Install build tools & library native untuk dependency Vite
-RUN apt-get update && apt-get install -y \
-    python3 g++ make libzip-dev zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Install PHP & Composer minimal untuk dependency
+RUN apt-get update && apt-get install -y git curl unzip php-cli libzip-dev zip \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copy package.json & package-lock.json
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
 COPY package*.json ./
 RUN npm install
 
-# Copy seluruh source code
 COPY . .
 
-# Set env vars Vite (Render akan inject via ARG)
 ARG VITE_API_URL
 ENV VITE_API_URL=$VITE_API_URL
 
-# Build frontend
 RUN npm run build
 
 # -----------------------------
