@@ -1,14 +1,14 @@
 FROM dunglas/frankenphp:latest
 
-RUN apk add --no-cache \
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     zip \
     unzip \
-    oniguruma-dev \
-    autoconf \
-    build-base \
-    npm
+    npm \
+    libicu-dev \
+    libpq-dev \
+    libzip-dev
 
 WORKDIR /app
 
@@ -23,6 +23,7 @@ RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
 
+ENV PORT=8080
 EXPOSE 8080
 
 CMD ["php", "artisan", "octane:start", "--server=frankenphp", "--host=0.0.0.0", "--port=8080"]
