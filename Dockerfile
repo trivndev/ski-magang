@@ -20,21 +20,21 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy project files
 COPY . .
 
-# Prepare folders & permissions
+# 🔹 Prepare folders & permissions BEFORE composer install
 RUN mkdir -p storage/framework/{cache,views,sessions} bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Install PHP dependencies
+# 🔹 Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Build frontend assets if package.json exists
+# 🔹 Build frontend assets if package.json exists
 RUN if [ -f package.json ]; then npm ci --no-audit --no-fund && npm run build; fi
 
-# Generate APP_KEY (jika belum ada)
+# 🔹 Generate APP_KEY jika belum ada
 RUN php artisan key:generate --ansi || true
 
-# Laravel cache
+# 🔹 Laravel cache
 RUN php artisan config:cache \
  && php artisan route:cache \
  && php artisan view:cache
