@@ -1,4 +1,4 @@
-<div class="space-y-4">
+<div class="space-y-4" wire:poll.5s>
     <flux:heading size="lg">Comments ({{ $comments->count() }})</flux:heading>
 
     @auth
