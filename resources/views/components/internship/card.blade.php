@@ -41,8 +41,15 @@
                             </div>
                         </div>
                     @endif
-                    <h1 class="text-lg md:text-xl font-medium">{{ $internship->job_title }}</h1>
-                    <h2 class="md:text-lg">{{ $internship->company }}</h2>
+                    <div class="flex items-start gap-3">
+                        @if($internship->company_logo)
+                            <img src="{{ asset('storage/' . $internship->company_logo) }}" alt="{{ $internship->company }} Logo" class="h-12 w-12 object-contain rounded border flex-shrink-0"/>
+                        @endif
+                        <div>
+                            <h1 class="text-lg md:text-xl font-medium">{{ $internship->job_title }}</h1>
+                            <h2 class="md:text-lg">{{ $internship->company }}</h2>
+                        </div>
+                    </div>
                     <p class="text-sm md:text-base">{{ $internship->location }}</p>
                     <div class="flex sm:block justify-between items-center space-y-1">
                         @if(!$isCreateRoute)
@@ -77,12 +84,19 @@
             </div>
             <flux:separator/>
             <div>
-                <h1 class="text-base md:text-lg">
-                    {{ $internship->job_title }}
-                </h1>
-                <flux:text class="text-base md:text-lg">
-                    {{ $internship->company }}
-                </flux:text>
+                <div class="flex items-start gap-3 mb-2">
+                    @if($internship->company_logo)
+                        <img src="{{ asset('storage/' . $internship->company_logo) }}" alt="{{ $internship->company }} Logo" class="h-16 w-16 object-contain rounded border flex-shrink-0"/>
+                    @endif
+                    <div>
+                        <h1 class="text-base md:text-lg">
+                            {{ $internship->job_title }}
+                        </h1>
+                        <flux:text class="text-base md:text-lg">
+                            {{ $internship->company }}
+                        </flux:text>
+                    </div>
+                </div>
                 <div class="space-y-1">
                     <div class="flex items-center space-x-2 place-items-center">
                         <flux:icon.map-pin variant="solid" class="text-red-500"/>
@@ -220,6 +234,37 @@
                                 <flux:input type="date" wire:model.defer="internshipForm.end_date"/>
                                 @error('internshipForm.end_date') <p
                                     class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                            </flux:field>
+                        </div>
+                        <div class="md:col-span-2">
+                            <flux:field>
+                                <flux:label>Company Logo</flux:label>
+                                @if($this->internshipForm->existing_company_logo && !$this->internshipForm->company_logo)
+                                    <div class="mb-2 flex items-center gap-2">
+                                        <img src="{{ asset('storage/' . $this->internshipForm->existing_company_logo) }}" alt="Current Logo" class="h-12 w-12 object-contain rounded border"/>
+                                        <flux:text class="text-sm text-gray-500">Current logo</flux:text>
+                                    </div>
+                                @endif
+                                <input type="file" wire:model="internshipForm.company_logo"
+                                       accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                                       class="block w-full text-sm text-gray-500 dark:text-gray-400
+                                              file:mr-4 file:py-2 file:px-4
+                                              file:rounded-md file:border-0
+                                              file:text-sm file:font-semibold
+                                              file:bg-blue-50 file:text-blue-700
+                                              hover:file:bg-blue-100
+                                              dark:file:bg-gray-700 dark:file:text-gray-200"/>
+                                <flux:text class="text-xs text-gray-500 mt-1">Max 2MB. Leave empty to keep current logo.</flux:text>
+                                @error('internshipForm.company_logo') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+                                <div wire:loading wire:target="internshipForm.company_logo" class="text-sm text-blue-600 mt-1">
+                                    Uploading...
+                                </div>
+                                @if($this->internshipForm->company_logo)
+                                    <div class="mt-2 flex items-center gap-2">
+                                        <img src="{{ $this->internshipForm->company_logo->temporaryUrl() }}" alt="New Logo Preview" class="h-12 w-12 object-contain rounded border"/>
+                                        <flux:text class="text-sm text-green-600">New logo preview</flux:text>
+                                    </div>
+                                @endif
                             </flux:field>
                         </div>
                     </div>

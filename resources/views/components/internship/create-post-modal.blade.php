@@ -27,6 +27,29 @@
                 </flux:field>
 
                 <flux:field>
+                    <flux:label badge="optional">Company Logo</flux:label>
+                    <input type="file" wire:model="internshipForm.company_logo"
+                           accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                           class="block w-full text-sm text-gray-500 dark:text-gray-400
+                                  file:mr-4 file:py-2 file:px-4
+                                  file:rounded-md file:border-0
+                                  file:text-sm file:font-semibold
+                                  file:bg-blue-50 file:text-blue-700
+                                  hover:file:bg-blue-100
+                                  dark:file:bg-gray-700 dark:file:text-gray-200"/>
+                    <flux:text class="text-xs text-gray-500 mt-1">Max 2MB. Formats: JPEG, PNG, JPG, GIF, WEBP</flux:text>
+                    @error('internshipForm.company_logo') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
+                    <div wire:loading wire:target="internshipForm.company_logo" class="text-sm text-blue-600 mt-1">
+                        Uploading...
+                    </div>
+                    @if($this->internshipForm->company_logo)
+                        <div class="mt-2">
+                            <img src="{{ $this->internshipForm->company_logo->temporaryUrl() }}" alt="Logo Preview" class="h-16 w-16 object-contain rounded border"/>
+                        </div>
+                    @endif
+                </flux:field>
+
+                <flux:field>
                     <flux:input
                         label="Location" badge="required"
                         placeholder="Job location"
