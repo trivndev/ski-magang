@@ -41,6 +41,11 @@ class Internship extends Model
         return $this->hasMany(BookmarkedPost::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     public function vocationalMajor(): BelongsTo
     {
         return $this->belongsTo(VocationalMajor::class);

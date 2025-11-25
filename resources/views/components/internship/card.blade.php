@@ -192,6 +192,8 @@
                     </div>
                 @endif
             </div>
+            <flux:separator class="my-4"/>
+            <livewire:internships.comments :internship="$internship" :key="'comments-'.$internship->id" />
         </div>
     </flux:modal>
     @if($isCreateRoute && !$isInactive)
