@@ -16,7 +16,6 @@ class UsersList extends Component
 {
     use WithPagination, WithNotify;
 
-    // Filter/search state (drafts are edited in the modal before applying)
     public string $draftSearchQuery = '';
     public string $searchQuery = '';
 
@@ -223,9 +222,9 @@ class UsersList extends Component
         $isSupervisor = $admin?->hasRole('supervisor') ?? false;
         $roles = $isSupervisor ? SpatieRole::query()->orderBy('name')->get(['name']) : collect();
 
-        foreach ($users as $u) {
-            /** @var User $u */
-            $this->selectedRoles[(string)$u->id] = $u->getRoleNames()->first();
+        foreach ($users as $user) {
+            /** @var User $user */
+            $this->selectedRoles[(string)$user->id] = $user->getRoleNames()->first();
         }
         return view('livewire.admin-dashboard.users-list', [
             'users' => $users,
