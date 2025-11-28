@@ -5,6 +5,7 @@ namespace App\Livewire\Internships\Forms;
 use App\Models\Internship;
 use App\Models\InternshipsPostStatus;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -15,6 +16,9 @@ class InternshipForm extends Form
     public string $job_title = '';
     #[Validate]
     public string $company = '';
+    #[Validate]
+    public $company_logo = null;
+    public ?string $existing_company_logo = null;
     #[Validate]
     public string $location = '';
     #[Validate]
@@ -39,6 +43,7 @@ class InternshipForm extends Form
         return [
             'job_title' => 'required|string|min:2|max:255',
             'company' => 'required|string|min:3|max:255',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'location' => 'required|string|min:6|max:255',
             'job_description' => 'required|string|min:32|max:2000',
             'requirements' => 'required|string|min:32|max:2000',
@@ -56,9 +61,15 @@ class InternshipForm extends Form
         $this->sanitizeInputs();
         $this->validate();
 
+        $logoPath = null;
+        if ($this->company_logo) {
+            $logoPath = $this->company_logo->store('company-logos', 'public');
+        }
+
         Internship::create([
             'job_title' => $this->job_title,
             'company' => $this->company,
+            'company_logo' => $logoPath,
             'location' => $this->location,
             'job_description' => $this->job_description,
             'requirements' => $this->requirements,
@@ -100,9 +111,18 @@ class InternshipForm extends Form
             ]);
         }
 
+        $logoPath = $internship->company_logo;
+        if ($this->company_logo) {
+            if ($internship->company_logo) {
+                Storage::disk('public')->delete($internship->company_logo);
+            }
+            $logoPath = $this->company_logo->store('company-logos', 'public');
+        }
+
         $internship->fill([
             'job_title' => $this->job_title,
             'company' => $this->company,
+            'company_logo' => $logoPath,
             'location' => $this->location,
             'job_description' => $this->job_description,
             'requirements' => $this->requirements,

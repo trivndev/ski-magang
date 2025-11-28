@@ -12,12 +12,13 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 #[layout('components.layouts.main-app'), Title('Create Post | SKI MAGANG')]
 class Create extends Component
 {
-    use WithPagination, HandlesInternshipsInteractions, WithQueryFilterAndSearch, WithNotify;
+    use WithPagination, WithFileUploads, HandlesInternshipsInteractions, WithQueryFilterAndSearch, WithNotify;
 
     public InternshipForm $internshipForm;
 
@@ -127,6 +128,8 @@ class Create extends Component
 
         $this->internshipForm->job_title = $internship->job_title;
         $this->internshipForm->company = $internship->company;
+        $this->internshipForm->company_logo = null;
+        $this->internshipForm->existing_company_logo = $internship->company_logo;
         $this->internshipForm->location = $internship->location;
         $this->internshipForm->job_description = $internship->job_description;
         $this->internshipForm->requirements = $internship->requirements;
