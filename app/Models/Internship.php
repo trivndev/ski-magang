@@ -17,6 +17,7 @@ class Internship extends Model
     protected $fillable = [
         'job_title',
         'company',
+        'company_logo',
         'location',
         'job_description',
         'requirements',
@@ -38,6 +39,11 @@ class Internship extends Model
     public function bookmarks(): HasMany
     {
         return $this->hasMany(BookmarkedPost::class);
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 
     public function vocationalMajor(): BelongsTo
