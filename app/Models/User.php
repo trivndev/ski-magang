@@ -62,12 +62,6 @@ class User extends Authenticatable implements MustVerifyEmail
             ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(UsersRole::class, 'role_id');
-    }
-
     public function internships(): HasMany
     {
         return $this->hasMany(Internship::class);
