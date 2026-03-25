@@ -28,17 +28,12 @@ class RolePermissionSeeder extends Seeder
         $admin->syncPermissions([$permissions[0], $permissions[1]]);
         $supervisor->syncPermissions($permissions);
 
-        $adminUser = User::findOrFail(2);
-        if ($adminUser) {
-            $adminUser->syncRoles([$admin]);
-        }
-
         $supervisorUser = User::findOrfail(1);
         if ($supervisorUser) {
             $supervisorUser->syncRoles([$supervisor]);
         }
 
-        $defaultUsers = User::whereNotIn('email', ['admin@example.com', 'nicolas100107@gmail.com'])->get();
+        $defaultUsers = User::whereNotIn('email', ['nicolas100107@gmail.com'])->get();
         foreach ($defaultUsers as $user) {
             if ($user->roles()->count() === 0) {
                 $user->assignRole($userRole);

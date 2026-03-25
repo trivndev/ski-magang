@@ -17,9 +17,11 @@ class InternshipSeeder extends Seeder
      */
     public function run(): void
     {
-        $internships = Internship::factory(1000)->recycle([
-            User::all(),
-            VocationalMajor::all(),
-        ])->create();
+        for ($i = 1; $i <= 10; $i++) {
+            $internships = Internship::factory(1000)->recycle([
+                User::all(),
+                VocationalMajor::all(),
+            ])->create();
+        }
     }
 }
